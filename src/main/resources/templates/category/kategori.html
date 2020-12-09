@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/fragment}">
+    <head>
+        <title>Kategori</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
+        </div>
+
+
+        <div layout:fragment="content">
+            <div class="card ml-3 mt-5 shadow">
+                <div class="card-body">
+
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" 
+                               data-toggle="tab" 
+                               href="#nav-home" 
+                               role="tab" 
+                               ria-controls="nav-home"
+                               aria-selected="true">Kategori</a>
+                            <a class="nav-item nav-link" 
+                               id="nav-profile-tab" 
+                               data-toggle="tab" 
+                               href="#tipe_category"
+                               role="tab" 
+                               aria-controls="tipe_category" 
+                               aria-selected="false">Tipe Kategori</a>
+                          
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <h1 class="text-center">Daftar Kategori</h1>
+                            <button type="button" class="btn btn-primary ml-4"
+                                    data-toggle="modal" data-target="#tambahdatakategori">
+                                Tambah Pemasok
+                            </button>
+
+                            <table class="table table-striped mt-4">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each='k, no:${kategori}'>
+                                        <td th:text='${no.count}'></td>
+                                        <td th:text='${k.namaKategori}'></td>
+                                        <td>
+                                            <button type="button" 
+                                                    class="btn btn-warning edit-form"
+                                                    data-toggle="modal" 
+                                                    data-target="#editdata"
+                                                    th:data-id="${k.id}"
+                                                    >
+                                                <i class="fa fa-pencil text-light" ></i>
+                                            </button>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <a class="btn btn-danger delete-confirm"
+                                               th:data-id ="${k.id}"
+                                               >
+                                                <i class="fa fa-trash text-light" ></i>
+                                            </a>
+
+                                            <!--edit modal-->
+                                            <div class="modal fade" id="editdata" 
+                                                 tabindex="-1"
+                                                 role="dialog" 
+                                                 aria-labelledby="tambahdata" 
+                                                 aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form th:action="@{/admin/updatecategory}" method="POST" id="editkategori">
+                                                                <div class="form-group">
+                                                                    <label for="nama" 
+                                                                           class="col-form-label">Nama:</label>
+                                                                    <input type="text" 
+                                                                           class="form-control kategori-nama" 
+                                                                           id="nama kategori-nama"
+                                                                           name="nama">
+                                                                </div>
+
+
+                                                                <input type="hidden" 
+                                                                       class="form-control kategori-id" 
+                                                                       id="nama kategori-id"
+                                                                       name="id">
+
+
+                                                            </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" 
+                                                                    class="btn btn-primary"
+                                                                    id="submit-form"
+                                                                    onclick="document.getElementById('editkategori').submit()">
+                                                                Simpan</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="tipe_category" role="tabpanel" aria-labelledby="tipe_category-tab">
+                              <th:block th:replace="category/tipekategori::tipe_kategori"></th:block>
+                        </div>
+                        
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+
+
+            <!--modal tambah-->
+            <div class="modal fade" id="tambahdatakategori" 
+                 tabindex="-1"
+                 role="dialog" 
+                 aria-labelledby="tambahdata" 
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/admin/savecategory}" method="POST" id="addkategori">
+
+                                <div class="form-group">
+                                    <label for="namaKategori" 
+                                           class="col-form-label">Nama : </label>
+                                    <input type="text" class="form-control" id="namaKategori" name="namaKategori"/>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" 
+                                    class="btn btn-primary"
+                                    id="submit-form"
+                                    onclick="document.getElementById('addkategori').submit()">
+                                Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+<th:block layout:fragment="optional" >
+    <script th:inline="javascript">
+        var htmldata = [[${success}]];
+       
+        if (htmldata) {
+            Swal.fire(
+                    'Good job!',
+                    'Data Berhasil Di tambahkan!',
+                    'success'
+                    )
+            $("#submit-form").on("click", function () {
+                $('#nama').val("");
+                $('#no_hp').val("");
+                $('#email').val("");
+                $('#alamat').val("");
+                let nama = $('#nama').val();
+            });
+        }
+
+        $('.edit-form').on("click", function () {
+            console.log("data");
+            let id = $(this).attr('data-id');
+            console.log(id)
+            
+            $.get('/admin/category/' + id, function (data) {
+                $('.kategori-nama').val(data.namaKategori);
+                $('.kategori-id').val(data.id);  
+                
+            })
+        });
+        
+       
+        
+         $('.edit-form-tipe').on("click", function () {
+                            
+
+            let id = $(this).attr('data-id');
+            $.get('/admin/getOneTipe/' + id, function (data) {
+               $('.nama-tipe').val(data.nama);
+               $('#category-id').val(data.kategoriId.id);
+               $('.kategori-tipe-id').val(data.id);
+               console.log(data);
+            })
+        });
+        
+        
+        $(".delete-confirm").on("click", function (e) {
+           
+            e.preventDefault();
+            let url = $(this).attr('href');
+            let id = $(this).attr('data-id');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you Sure!',
+                text: 'Do you want delete this category?',
+                showCancelButton: true,
+                showCloseButton: true,
+                confirmButtonText: 'Ok',
+                cancelButtonText: 'Cancel'
+            }).then(function (confirm) {
+
+                if (confirm.value) {
+                    window.location = `/admin/category/delete/${id}`;
+                }
+            })
+
+        });
+        
+        
+        $(".delete-tipe-confirm").on("click", function (e) {
+           
+            e.preventDefault();
+            let url = $(this).attr('href');
+            let id = $(this).attr('data-id');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you Sure!',
+                text: 'Do you want delete this tipe?',
+                showCancelButton: true,
+                showCloseButton: true,
+                confirmButtonText: 'Ok',
+                cancelButtonText: 'Cancel'
+            }).then(function (confirm) {
+
+                if (confirm.value) {
+                    window.location = ` /admin/tipecategory/delete/${id}`;
+                }
+            })
+
+        });
+        
+       
+    </script>
+</th:block>
+</body>
+</html>

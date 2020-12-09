@@ -1,0 +1,167 @@
+<div th:fragment="tipe_kategori">
+    <h1 class="text-center">Daftar Tipe Kategori</h1>
+    <button type="button" class="btn btn-primary ml-4"
+            data-toggle="modal" data-target="#tambahdatatipe">
+        Tambah tipe kategori
+    </button>
+    <!--    <ul th:each='t, no:${tipe}'>
+            <li th:text="${no.count}"></li>
+            <li th:text="${t.nama}"></li>
+            <li th:text="${t.kategoriId.namaKategori}"></li>
+        </ul>-->
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Kategori</th>
+                <th scope="col">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each='t, no:${tipe}'>
+                <td th:text="${no.count}"></td>
+                <td th:text="${t.nama}"></td>
+                <td th:text="${t.kategoriId.namaKategori}"></td>
+                <td>
+                    <button type="button" 
+                            class="btn btn-warning edit-form-tipe"
+                            data-toggle="modal" 
+                            data-target="#edittipecategory"
+                            th:data-id="${t.id}"
+                            >
+                        <i class="fa fa-pencil text-light" ></i>
+                    </button> 
+
+                    <a class="btn btn-danger delete-tipe-confirm"
+                       th:data-id ="${t.id}"
+                       >
+                        <i class="fa fa-trash text-light" ></i>
+                    </a>
+
+
+
+
+
+                    <!--edit modal-->
+                    <div class="modal fade" id="edittipecategory" 
+                         tabindex="-1"
+                         role="dialog" 
+                         aria-labelledby="tambahdata" 
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Tambah Kategori</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:action="@{/admin/updatetipecategory}" 
+                                          method="POST" 
+                                          id="edittipekategori">
+                                        <div class="form-group">
+                                            <label for="nama" 
+                                                   class="col-form-label">Nama:</label>
+                                            <input type="text" 
+                                                   class="form-control nama-tipe" 
+                                                   id="nama nama-tipe"
+                                                   name="nama">
+                                        </div>
+
+                                       
+
+                                        <select class="form-control" name="category" id="category-id">
+                                            <option value="" 
+                                                    th:disabled="disabled" 
+                                                    selected="">--Pilih Kategori--</option>
+                                            <option th:each="k : ${kategori}" 
+                                                    th:text="${k.namaKategori}"
+                                                    th:value="${k.id}" />
+                                        </select>
+
+
+                                        <input type="hidden" 
+                                               class="form-control kategori-tipe-id" 
+                                               id="nama kategori-tipe-id"
+                                               name="id">
+
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" 
+                                            class="btn btn-primary"
+                                            id="submit-form"
+                                            onclick="document.getElementById('edittipekategori').submit()">
+                                        Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+    <!--modal tambah-->
+    <div class="modal fade" id="tambahdatatipe" 
+         tabindex="-1"
+         role="dialog" 
+         aria-labelledby="tambahdata" 
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah Tipe Kategori</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/admin/savetipekategori}" 
+                          method="POST" 
+                          id="addtipekategori">
+
+                        <div class="form-group">
+                            <label for="namaKategori" 
+                                   class="col-form-label">Nama : </label>
+                            <input type="text" class="form-control" id="namaKategori" name="namaKategori"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="namaKategori" 
+                                   class="col-form-label">Nama : </label>
+                            <select class="form-control" name="category">
+                                <option value="" 
+                                        th:disabled="disabled" 
+                                        selected="">--Pilih Kategori--</option>
+                                <option th:each="k : ${kategori}" 
+                                        th:text="${k.namaKategori}"
+                                        th:value="${k.id}" />
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" 
+                            class="btn btn-primary"
+                            id="submit-form"
+                            onclick="document.getElementById('addtipekategori').submit()">
+                        Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

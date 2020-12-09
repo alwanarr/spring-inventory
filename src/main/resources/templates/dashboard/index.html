@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/fragment}">
+    <head>
+        <title>Dashboard</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
+        </div>
+
+        <div layout:fragment="content">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card ml-3 mt-5 shadow">
+                        <div class="card-body " style="border-left: 5px solid #dc3545;">
+                            <h4 class="text-center">5</h4>
+                            <h2 class="text-center text-secondary">Produk</h2>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card ml-3 mt-5 shadow ">
+                        <div class="card-body" style="border-left: 5px solid green">
+                            <h4 class="text-center">5</h4>
+                            <h2 class="text-center text-secondary">Pelanggan</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card ml-3 mt-5 shadow">
+                        <div class="card-body" style="border-left: 5px solid blue;">
+                            <h4 class="text-center">5</h4>
+                            <h2 class="text-center text-secondary">Pemasok</h2>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

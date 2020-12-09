@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/fragment}">
+    <head>
+        <title>Inventory</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
+        </div>
+
+        <div layout:fragment="content">
+            <div class="card ml-3 mt-5 shadow">
+                <div class="card-body">
+                    <h1 class="text-center">Daftar Pemasok</h1>
+                    <button type="button" class="btn btn-primary ml-4"
+                            data-toggle="modal" 
+                            data-target="#tambahdata">
+                        Tambah Pemasok
+                    </button>
+                    
+
+
+                    <table class="table table-striped mt-4">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Pemasok</th>
+                                <th>Email</th>
+                                <th>No Hp</th>
+                                <th>Alamat</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="r, no: ${pemasok}">
+                                <td th:text="${no.count}"></td>
+                                <td th:text="${r.nama}"></td>
+                                <td th:text="${r.email}"></td>
+                                <td th:text="${r.noHp}"></td>
+                                <td th:text="${r.alamat}"></td>
+                                <td>
+                                    <button type="button" 
+                                            class="btn btn-warning edit-form"
+                                            data-toggle="modal" 
+                                            data-target="#editdata"
+                                            th:data-id="${r.id}"
+                                            >
+                                        <i class="fa fa-pencil text-light" ></i>
+                                    </button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-danger delete-confirm"
+                                       th:data-id ="${r.id}"
+                                       >
+                                        <i class="fa fa-trash text-light" ></i>
+                                    </a>
+                                </td>
+
+
+                                <!--modal Edit-->
+                        <div class="modal fade" id="editdata" 
+                             tabindex="-1"
+                             role="dialog" 
+                             aria-labelledby="tambahdata" 
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Pemasok</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form th:action="@{/admin/updatepemasok}" method="POST" id="formeditpemasok">
+                                            
+                                            <div class="form-group">
+                                                <label for="nama" 
+                                                       class="col-form-label">Nama:</label>
+                                                <input type="text" 
+                                                       class="form-control" 
+                                                       id="nama-edit"
+                                                       value=""
+                                                       name="nama">
+                                            </div>
+                                            <div class="form-group">
+                                                
+                                                <input type="hidden" 
+                                                       class="form-control" 
+                                                       id="id-edit"
+                                                       value=""
+                                                       name="id">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="no_hp" 
+                                                       class="col-form-label">No Hp: </label>
+
+                                                <input type="text" 
+                                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" 
+                                                       class="form-control" 
+                                                       id="no_hp-edit"
+                                                       name="no_hp"
+                                                       maxlength="14"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email" 
+                                                       class="col-form-label">Email : </label>
+                                                <input type="email" 
+                                                       class="form-control" 
+                                                       id="email-edit"
+                                                       name="email">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="alamat" class="col-form-label">Alamat : </label>
+                                                <textarea class="form-control" 
+                                                          id="alamat-edit" 
+                                                          name="alamat"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" 
+                                                class="btn btn-primary"
+                                                id="submit-form"
+                                                onclick="document.getElementById('formeditpemasok').submit()">
+                                            Simpan</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </tr>
+                        </tbody>
+
+
+                </div>
+            </div>
+            <!--modal tambah-->
+            <div class="modal fade" id="tambahdata" 
+                 tabindex="-1"
+                 role="dialog" 
+                 aria-labelledby="tambahdata" 
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Tambah Pemasok</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/admin/savepemasok}" method="POST" id="formpemasok">
+                                <div class="form-group">
+                                    <label for="nama" 
+                                           class="col-form-label">Nama:</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="nama"
+                                           name="nama">
+                                </div>
+                                <div class="form-group">
+                                    <label for="no_hp" 
+                                           class="col-form-label">No Hp: </label>
+
+                                    <input type="text" 
+                                           oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" 
+                                           class="form-control" 
+                                           id="no_hp"
+                                           name="no_hp"
+                                           maxlength="14"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" 
+                                           class="col-form-label">Email : </label>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email"
+                                           name="email">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="alamat" class="col-form-label">Alamat : </label>
+                                    <textarea class="form-control" 
+                                              id="alamat" 
+                                              name="alamat"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" 
+                                    class="btn btn-primary"
+                                    id="submit-form"
+                                    onclick="document.getElementById('formpemasok').submit()">
+                                Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+    <th:block layout:fragment="optional" >
+        <script th:inline="javascript">
+            var htmldata = [[${success}]];
+            if (htmldata) {
+                Swal.fire(
+                        'Good job!',
+                        'Data Berhasil Di tambahkan!',
+                        'success'
+                        )
+                $("#submit-form").on("click", function () {
+                    
+                    $('#nama').val("");
+                    $('#no_hp').val("");
+                    $('#email').val("");
+                    $('#alamat').val("");
+                    let nama = $('#nama').val();
+
+                    
+                });
+            }
+
+            $(document).ready(function () {
+                $('.edit-form').on("click", function (event) {
+                    let id = $(this).attr('data-id');
+                    console.log(id);
+                    $.get("/admin/supplier/" + id, function (data) {
+                        let id = document.getElementById('id-edit');
+                        console.log(id);
+                        $('#id-edit').val(data.id);
+                        $('#nama-edit').val(data.nama);
+                        $('#no_hp-edit').val(data.noHp);
+                        $('#email-edit').val(data.email);
+                        $('#alamat-edit').val(data.alamat);
+                        
+                    });
+                })
+            })
+
+
+            $(".delete-confirm").on("click", function (e) {
+               
+                e.preventDefault();
+                let url = $(this).attr('href');
+                let id = $(this).attr('data-id');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Are you Sure!',
+                    text: 'Do you want delete this Supplier?',
+                    showCancelButton: true,
+                    showCloseButton: true,
+                    confirmButtonText: 'Ok',
+                    cancelButtonText: 'Cancel'
+                }).then(function (confirm) {
+
+                    if (confirm.value) {
+                        window.location = `/admin/supplier/delete/${id}`;
+                    }
+                })
+
+            });
+        </script>
+    </th:block>
+
+</body>
+</html>

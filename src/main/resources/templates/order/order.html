@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/fragment}">
+    <head>
+        <title>Order</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
+        </div>
+        <div layout:fragment="content">
+            <div class="card ml-3 mt-5 shadow">
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <h1 class="text-center"> Order </h1>
+                            <div class="row mt-5">
+                                <div class="col-md-4"  th:each="p: ${produk}">
+                                    <div class="card">
+                                        <div class="card-header">
+
+                                            <img
+                                                width="300"
+                                                height="200"
+                                                class="img-thumbnail"
+                                                th:src="@{'/product/' + ${p.id} + '/' + ${p.gambar} }"/>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <p th:text="${p.nama}" 
+                                               class="card-title nama-produk"
+                                               th:attr="data-nama-produk=${p.nama}"></p>
+                                            <p th:text="'Rp.' + ${p.hargaJual}" class="card-text harga-produk" 
+                                               th:attr="data-harga-produk=${p.hargaJual}"></p>
+
+                                            <p th:text="${p.stok}" class="text-left stok-produk" 
+                                               th:attr="data-stok-produk=${p.stok}"
+                                               style="display: none"></p>
+                                            <button 
+                                                type="button" 
+                                                class="btn btn-success w-100 add-to-cart"
+                                                >
+                                                Beli
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--                                <div class="col-md-6">
+                                                                    halo
+                                                                </div>   -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body shopping-cart">
+                                    <h1 class="text-center">Order</h1>
+                                    <div class="row">
+
+                                    </div>
+                                   
+                                </div>
+                                
+                                <a class="btn btn-success mt-5" 
+                                       th:href="@{/admin/checkout}">Order</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    <th:block layout:fragment="optional" >
+        <script th:inline="javascript">
+            (function () {
+                let cardContainer = document.querySelector(".card");
+                let shoppingCart = document.querySelector(".shopping-cart");
+                function getLsContent() {
+                    const lsContent = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+                    return lsContent;
+                }
+
+                function setLsContent(content) {
+                    localStorage.setItem("shoppingCart", JSON.stringify(content));
+                }
+
+                function displayProduk() {
+                    let ls = getLsContent();
+                    let output = "";
+
+                    if (ls !== null) {
+                        for (let produk of ls) {
+                            output += `<div class="mt-3">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img src="${produk.img}"
+                                                 class="img-thumbnail"/>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p>
+                                                ${produk.namaProduk}
+                                                <button type="button" 
+                                                        class="btn btn-danger btn-sm float-right delete-item" 
+                                                        data-name="${produk.namaProduk}">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+
+                                            </p>
+                                            <p class="text-success">Rp.<span>${produk.hargaJual}</span></p>
+                                            <input class="form-control qty-produk" 
+                                                        type="number" min="0" 
+                                                        data-name="${produk.namaProduk}"
+                                                        value="${produk.qty}">
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                             
+                        `;
+                        }
+                        shoppingCart.querySelector(".row").innerHTML = output;
+                    }
+                }
+
+                function saveProduk(btn) {
+                    const body = btn.parentElement;
+                    const namaProduk = body.querySelector(".nama-produk").textContent;
+
+                    let hargaProduk = Number(body.querySelector('.harga-produk')
+                            .getAttribute('data-harga-produk'));
+                    let img = body.previousElementSibling.childNodes[1].currentSrc;
+                    let stok = body.querySelector(".stok-produk").getAttribute("data-stok-produk");
+
+
+                    let isProductInCart = false;
+
+                    let ls = getLsContent();
+
+                    if (ls.length) {
+                        ls.forEach(function (product, index) {
+                            if (ls[index].namaProduk == namaProduk) {
+                                alert("Produk yang anda masukan sudah di kerjang belanja");
+                                isProductInCart = true;
+                            }
+                        });
+                    }
+
+                    if (!isProductInCart) {
+                        ls.push({
+                            namaProduk: namaProduk,
+                            hargaJual: Number(hargaProduk),
+                            img: img,
+                            stok: Number(stok),
+                            qty: 1,
+                            total: hargaProduk * 1
+                        });
+
+                        setLsContent(ls);
+
+                        displayProduk();
+                        
+                    }
+                }
+
+                function removeProduk(nama) {
+                    let ls = getLsContent();
+
+                    for (let i in ls) {
+                        if (ls[i].namaProduk == nama) {
+                            ls.splice(i, 1);
+                            break;
+                        }
+                    }
+                    setLsContent(ls);
+                    location.reload();
+
+                    displayProduk();
+                }
+
+                cardContainer.addEventListener("click", function (e) {
+                    if (e.target.classList.contains("add-to-cart")) {
+                        e.preventDefault();
+                        const btn = e.target;
+                        saveProduk(btn);
+                    }
+                });
+
+
+                cardContainer.addEventListener("click", function (e) {
+                    if (e.target.classList.contains("add-to-cart")) {
+                        displayProduk();
+                    }
+                });
+
+                document.addEventListener("DOMContentLoaded", function (e) {
+                    
+                    displayProduk();
+
+                })
+
+                shoppingCart.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    if (e.target.classList.contains("delete-item")) {
+                        const produk = e.target.getAttribute("data-name");
+                        removeProduk(produk);
+
+                        displayProduk();
+                    }
+                });
+
+                shoppingCart.addEventListener("change", function (e) {
+                    let qtyProduk = document.querySelector(".qty-produk");
+
+                    let nama = qtyProduk.getAttribute("data-name");
+                    let qty = Number(qtyProduk.value);
+
+                    setQty(nama, qty);
+                });
+
+                function setQty(nama, qty) {
+                    let ls = getLsContent();
+
+                    for (let i in ls) {
+                        if (ls[i].namaProduk == nama) {
+                            ls[i].qty = qty;
+                            ls[i].total = ls[i].qty * ls[i].hargaJual;
+                            break;
+                        }
+                    }
+
+                    setLsContent(ls);
+                }
+
+            })();
+
+
+
+
+        </script>
+    </th:block>
+</body>
+</html>

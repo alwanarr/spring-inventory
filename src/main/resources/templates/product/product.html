@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/fragment}">
+    <head>
+        <title>Produk</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
+        </div>
+
+
+        <div layout:fragment="content">
+            <div class="card ml-3 mt-5 shadow">
+                <div class="card-body">
+
+                    <nav >
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" 
+                               id="nav-home-tab" 
+                               data-toggle="tab" 
+                               href="#produk" 
+                               role="tab" 
+                               aria-controls="nav-home" 
+                               aria-selected="true">Produk</a>
+                            <a class="nav-item nav-link" 
+                               id="nav-profile-tab" 
+                               data-toggle="tab" 
+                               href="#nav-profile" 
+                               role="tab" 
+                               aria-controls="nav-profile" 
+                               aria-selected="false">Produk di tolak</a>
+                            <a class="nav-item nav-link" 
+                               id="nav-contact-tab" 
+                               data-toggle="tab" 
+                               href="#nav-contact" 
+                               role="tab" 
+                               aria-controls="nav-contact" 
+                               aria-selected="false">Produk habis</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" 
+                             id="produk" 
+                             role="tabpanel" 
+                             aria-labelledby="nav-home-tab">
+                            <h1 class="text-center mt-3">Daftar Produk</h1>
+                            <a  th:href="@{/product/add-product}"  class="btn btn-primary ml-4"
+                                >
+                                Tambah Produk
+                            </a>
+
+                            <table class="table table-striped mt-4">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama</th>
+                                        <th scope="col">Harga Jual</th>
+                                        <th scope="col">Harga Awal</th>
+                                        <th scope="col">Stok</th>
+                                        <th scope="col">Kategori</th>
+                                        <th scope="col">Pemasok</th>
+                                        <th scope="col">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="p, no:${produk}">
+                                        <td th:text="${no.count}"></td>
+                                        <td th:text="${p.nama}"></td>
+                                        <td th:text="${p.hargaJual}"></td>
+                                        <td th:text="${p.hargaAwal}"></td>
+                                        <td th:text="${p.stok}"></td>
+                                        <td th:text="${p.kategoriId.namaKategori}"></td>
+                                        <td th:text="${p.pemasokId.nama}"></td>
+                                        <td>
+                                            <a 
+                                                    class="btn btn-warning edit-form"
+                                                    th:href="@{/product/edit-product/{id} (id=${p.id})}"
+                                                    >
+                                                <i class="fa fa-pencil text-light" ></i>
+                                            </a>
+
+                                            <a class="btn btn-danger delete-confirm"
+                                               th:data-id ="${p.id}"
+                                               >
+                                                <i class="fa fa-trash text-light" ></i>
+                                            </a>
+
+<!--                                            <button type="button" 
+                                                    class="btn btn-warning view-form"
+                                                    data-toggle="modal" 
+                                                    data-target="#viewdata"
+                                                    th:data-id="${p.id}"
+                                                    >
+                                                <i class="fa fa-eye text-light" aria-hidden="true"></i>
+
+                                            </button>-->
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                           <th:block th:replace="product/rejected-product::rejected_product"></th:block>
+                        </div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                            <th:block th:replace="product/stokOfProduct::stok_product"></th:block>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+<!--            modal view
+            <div class="modal fade" id="viewdata" 
+                 tabindex="-1"
+                 role="dialog" 
+                 aria-labelledby="tambahdata" 
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Tambah Produk</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/product/saveproduct}" 
+                                  method="POST"
+                                  id="addproduk"
+                                  enctype="multipart/form-data">
+
+                                <div class="form-group">
+                                    <label for="nama_produk" class="col-form-label">Nama Produk :</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="nama_produk" 
+                                           name="namaproduk"
+                                           placeholder="Masukan Nama" disabled=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="harga_jual" class="col-form-label">Harga Jual :</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="harga_jual" 
+                                           name="harga_jual"
+                                           placeholder="Masukan Harga Jual" disabled=""/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="harga_awal" class="col-form-label">Harga Awal :</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="harga_awal" 
+                                           name="harga_awal"
+                                           placeholder="Masukan Harga Awal" disabled=""/>
+                                </div>
+
+                                <div class="form-group" >
+                                    <label for="stok" class="col-form-label">Stok :</label>
+
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="stok" 
+                                           name="stok"
+                                           placeholder="Masukan Stok" disabled=""/>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="stok" class="col-form-label">Kategori :</label>
+
+                                    <select class="form-control" name="kategori" id="kategori" disabled=""> 
+                                        <option value="" disabled="" selected="">--Pilih Kategori--</option>
+                                        <option th:each="k:${kategori}"
+                                                th:value="${k.id}"
+                                                th:text="${k.namaKategori}"></option>
+                                    </select>
+                                </div>
+
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" 
+                                    class="btn btn-primary"
+                                    id="submit-form"
+                                    onclick="document.getElementById('addproduk').submit()">
+                                Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+
+
+    <th:block layout:fragment="optional" >
+        <script th:inline="javascript">
+            $(document).ready(function () {
+                $('.view-form').on("click", function () {
+                    let id = $(this).attr('data-id');
+                    $.get("/product/getOneProduct/" + id, function (data) {
+                        $('#nama_produk').val(data.nama);
+                        $('#harga_jual').val(data.hargaJual);
+                        $('#harga_awal').val(data.hargaAwal);
+                        $('#stok').val(data.stok);
+                        $('#kategori').val(data.kategoriId.id);
+                        console.log(data);
+                    })
+                })
+            });
+        </script>
+    </th:block>
+</body>
+</html>

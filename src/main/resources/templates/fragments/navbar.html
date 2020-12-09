@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<span th:fragment="navbar-admin">
+    <a href="/dashboard" 
+       th:classappend="${#request.getRequestURI() == '/dashboard' ? 'active-menu' : ''}"
+       class="list-group-item list-group-item-action bg-light">Dashboard</a>
+    <a href="/admin/order" 
+       th:classappend="${#request.getRequestURI() == '/admin/order' ? 'active-menu' : ''}"
+       class="list-group-item list-group-item-action bg-light">Order</a>
+    <a href="/products" 
+       th:classappend="${#request.getRequestURI() == '/products' ? 'active-menu' : ''}"
+       class="list-group-item list-group-item-action bg-light">Produk</a>
+    <a href="/admin/supplier" 
+       th:classappend="${#request.getRequestURI() == '/admin/supplier' ? 'active-menu' : ''}"
+       class="list-group-item list-group-item-action bg-light">Pemasok</a>
+    <a href="/admin/categories" 
+       th:classappend="${#request.getRequestURI() == '/admin/categories' ? 'active-menu' : ''}"
+       class="list-group-item list-group-item-action bg-light">Kategori</a>
+</span>

@@ -1,0 +1,40 @@
+<div th:fragment="stok_product">
+    
+    <!--    <ul th:each='t, no:${tipe}'>
+            <li th:text="${no.count}"></li>
+            <li th:text="${t.nama}"></li>
+            <li th:text="${t.kategoriId.namaKategori}"></li>
+        </ul>-->
+    
+    <table class="table table-striped mt-5">
+        <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Harga Jual</th>
+                <th scope="col">Harga Awal</th>
+                <th scope="col">Stok</th>
+                <th scope="col">Kategori</th>
+                <th scope="col">Pemasok</th>
+                <th scope="col">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p, no:${getStokProduk}">
+                <td th:text="${no.count}"></td>
+                <td th:text="${p.nama}"></td>
+                <td th:text="${p.hargaJual}"></td>
+                <td th:text="${p.hargaAwal}"></td>
+                <td th:text="${p.stok}"></td>
+                <td th:text="${p.kategoriId.namaKategori}"></td>
+                <td th:text="${p.pemasokId.nama}"></td>
+                <td>
+                    <a class="btn btn-warning"
+                       th:href="@{/product/edit-product/{id} (id=${p.id})}">
+                         <i class="fa fa-pencil text-light" ></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
