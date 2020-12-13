@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pelanggan.findAll", query = "SELECT p FROM Pelanggan p")
-    , @NamedQuery(name = "Pelanggan.findById", query = "SELECT p FROM Pelanggan p WHERE p.id = :id")
+    , @NamedQuery(name = "Pelanggan.findByIdPelanggan", query = "SELECT p FROM Pelanggan p WHERE p.idPelanggan = :idPelanggan")
     , @NamedQuery(name = "Pelanggan.findByNama", query = "SELECT p FROM Pelanggan p WHERE p.nama = :nama")
     , @NamedQuery(name = "Pelanggan.findByNoHp", query = "SELECT p FROM Pelanggan p WHERE p.noHp = :noHp")
     , @NamedQuery(name = "Pelanggan.findByEmail", query = "SELECT p FROM Pelanggan p WHERE p.email = :email")})
@@ -44,8 +44,8 @@ public class Pelanggan implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_pelanggan")
+    private Integer idPelanggan;
     @Basic(optional = false)
 //    @NotNull
 //    @Size(min = 1, max = 50)
@@ -70,22 +70,22 @@ public class Pelanggan implements Serializable {
     public Pelanggan() {
     }
 
-    public Pelanggan(Integer id) {
-        this.id = id;
+    public Pelanggan(Integer idPelanggan) {
+        this.idPelanggan = idPelanggan;
     }
 
-    public Pelanggan(Integer id, String nama, String alamat) {
-        this.id = id;
+    public Pelanggan(Integer idPelanggan, String nama, String alamat) {
+        this.idPelanggan = idPelanggan;
         this.nama = nama;
         this.alamat = alamat;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdPelanggan() {
+        return idPelanggan;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdPelanggan(Integer idPelanggan) {
+        this.idPelanggan = idPelanggan;
     }
 
     public String getNama() {
@@ -132,7 +132,7 @@ public class Pelanggan implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idPelanggan != null ? idPelanggan.hashCode() : 0);
         return hash;
     }
 
@@ -143,7 +143,7 @@ public class Pelanggan implements Serializable {
             return false;
         }
         Pelanggan other = (Pelanggan) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idPelanggan == null && other.idPelanggan != null) || (this.idPelanggan != null && !this.idPelanggan.equals(other.idPelanggan))) {
             return false;
         }
         return true;
@@ -151,7 +151,7 @@ public class Pelanggan implements Serializable {
 
     @Override
     public String toString() {
-        return "com.project.inventory.entity.Pelanggan[ id=" + id + " ]";
+        return "com.project.inventory.entity.Pelanggan[ idPelanggan=" + idPelanggan + " ]";
     }
     
 }

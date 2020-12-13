@@ -5,7 +5,6 @@
  */
 package com.project.inventory.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -48,8 +47,7 @@ public class Tipe implements Serializable {
     @Column(name = "nama", length = 30)
     private String nama;
     @JoinColumn(name = "kategori_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-  
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Kategori kategoriId;
 
     public Tipe() {
@@ -112,5 +110,5 @@ public class Tipe implements Serializable {
     public String toString() {
         return "com.project.inventory.entity.Tipe[ id=" + id + " ]";
     }
-
+    
 }

@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pemasok.findAll", query = "SELECT p FROM Pemasok p")
-    , @NamedQuery(name = "Pemasok.findById", query = "SELECT p FROM Pemasok p WHERE p.id = :id")
+    , @NamedQuery(name = "Pemasok.findByIdPemasok", query = "SELECT p FROM Pemasok p WHERE p.idPemasok = :idPemasok")
     , @NamedQuery(name = "Pemasok.findByNama", query = "SELECT p FROM Pemasok p WHERE p.nama = :nama")
     , @NamedQuery(name = "Pemasok.findByNoHp", query = "SELECT p FROM Pemasok p WHERE p.noHp = :noHp")
     , @NamedQuery(name = "Pemasok.findByEmail", query = "SELECT p FROM Pemasok p WHERE p.email = :email")})
@@ -44,8 +44,8 @@ public class Pemasok implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_pemasok")
+    private Integer idPemasok;
     @Basic(optional = false)
 //    @NotNull
 //    @Size(min = 1, max = 70)
@@ -74,24 +74,24 @@ public class Pemasok implements Serializable {
     public Pemasok() {
     }
 
-    public Pemasok(Integer id) {
-        this.id = id;
+    public Pemasok(Integer idPemasok) {
+        this.idPemasok = idPemasok;
     }
 
-    public Pemasok(Integer id, String nama, String noHp, String email, String alamat) {
-        this.id = id;
+    public Pemasok(Integer idPemasok, String nama, String noHp, String email, String alamat) {
+        this.idPemasok = idPemasok;
         this.nama = nama;
         this.noHp = noHp;
         this.email = email;
         this.alamat = alamat;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdPemasok() {
+        return idPemasok;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdPemasok(Integer idPemasok) {
+        this.idPemasok = idPemasok;
     }
 
     public String getNama() {
@@ -138,7 +138,7 @@ public class Pemasok implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idPemasok != null ? idPemasok.hashCode() : 0);
         return hash;
     }
 
@@ -149,7 +149,7 @@ public class Pemasok implements Serializable {
             return false;
         }
         Pemasok other = (Pemasok) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idPemasok == null && other.idPemasok != null) || (this.idPemasok != null && !this.idPemasok.equals(other.idPemasok))) {
             return false;
         }
         return true;
@@ -157,7 +157,7 @@ public class Pemasok implements Serializable {
 
     @Override
     public String toString() {
-        return "com.project.inventory.entity.Pemasok[ id=" + id + " ]";
+        return "com.project.inventory.entity.Pemasok[ idPemasok=" + idPemasok + " ]";
     }
     
 }

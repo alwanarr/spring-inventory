@@ -32,7 +32,7 @@ and open the template in the editor.
                                                 width="300"
                                                 height="200"
                                                 class="img-thumbnail"
-                                                th:src="@{'/product/' + ${p.id} + '/' + ${p.gambar} }"/>
+                                                th:src="@{'/product/' + ${p.idProduk} + '/' + ${p.gambar} }"/>
                                         </div>
                                         <div class="card-body">
 
@@ -41,9 +41,13 @@ and open the template in the editor.
                                                th:attr="data-nama-produk=${p.nama}"></p>
                                             <p th:text="'Rp.' + ${p.hargaJual}" class="card-text harga-produk" 
                                                th:attr="data-harga-produk=${p.hargaJual}"></p>
-
+                                                
                                             <p th:text="${p.stok}" class="text-left stok-produk" 
                                                th:attr="data-stok-produk=${p.stok}"
+                                               style="display: none"></p>
+                                            
+                                            <p th:text="${p.idProduk}" class="text-left id-produk" 
+                                               th:attr="data-id-produk=${p.idProduk}"
                                                style="display: none"></p>
                                             <button 
                                                 type="button" 
@@ -139,6 +143,7 @@ and open the template in the editor.
                             .getAttribute('data-harga-produk'));
                     let img = body.previousElementSibling.childNodes[1].currentSrc;
                     let stok = body.querySelector(".stok-produk").getAttribute("data-stok-produk");
+                    let idProduk = body.querySelector(".id-produk").getAttribute("data-id-produk");
 
 
                     let isProductInCart = false;
@@ -156,6 +161,7 @@ and open the template in the editor.
 
                     if (!isProductInCart) {
                         ls.push({
+                            id: idProduk,
                             namaProduk: namaProduk,
                             hargaJual: Number(hargaProduk),
                             img: img,

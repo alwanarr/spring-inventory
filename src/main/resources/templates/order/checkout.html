@@ -13,16 +13,334 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-       <div layout:fragment="sidebar">
+        <div layout:fragment="sidebar">
             <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
         </div>
         <div layout:fragment="content">
             <div class="card ml-3 mt-5 shadow">
                 <div class="card-body">
-                    
+                    <h1 class="text-center">Chekout Barang</h1>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <form th:action="@{/admin/savecustomer}" method="POST" id="form-save-customer">
+
+                                <div class="form-group no_hp_parent">
+                                    <label for="no_hp">No HP :</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           name="no_hp" 
+                                           id="no_hp"
+                                           required=""
+                                           />        
+                                    <div id="suggesstion-box"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nama">Nama Pelanggan :</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           name="nama" 
+                                           id="nama"
+                                           required=""
+                                           />        
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email :</label>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           name="email" 
+                                           id="email"
+                                           required=""/>           
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label for="alamat">Alamat :</label>
+                                    <textarea class="form-control" name="alamat"  id="alamat">
+                                        
+                                    </textarea>    
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tanggal">Tanggal :</label>
+                                    <input type="date" 
+                                           class="form-control" 
+                                           name="tanggal" 
+                                           id="tanggal"/>           
+                                </div>
+
+                                <h4>Total : <span class="total">XX.xxxx</span></h4>
+                                <button type="submit" class="btn btn-success mt-3 save">
+                                    Beli
+                                </button>
+                                <a th:href="@{/admin/order}" 
+                                   class="btn btn-secondary mt-3">kembali</a>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-        
-    </body>
+    <th:block layout:fragment="optional" >
+        <script th:inline="javascript">
+            let total = document.querySelector(".total");
+            let save = document.querySelector(".save");
+
+
+
+
+            function getLs() {
+                return JSON.parse(localStorage.getItem("shoppingCart"));
+            }
+
+            function totalHarga() {
+                let ls = getLs();
+                if (ls != null) {
+                    return ls.reduce(function (accu, cur) {
+                        return accu += cur.total;
+                        console.log(accu, cur.total);
+                    }, 0);
+                }
+
+            }
+            ;
+
+            function displayTotal() {
+                total.innerHTML = totalHarga() != undefined ? totalHarga() : " ";
+            }
+            displayTotal();
+
+            let search = document.getElementById("no_hp");
+            var dataP;
+            function autocomplete(inp, arr = []) {
+                var currentFocus;
+
+                inp.addEventListener("input", function (e) {
+                    var a, b, i, val = this.value;
+
+                    closeAllLists();
+
+                    if (!val) {
+                        $("#email").val(" ");
+                        $("#alamat").val(" ");
+                        console.log("masuk");
+                        return false;
+                    }
+                    currentFocus = -1;
+
+                    a = document.createElement("DIV");
+                    a.setAttribute("id", this.id + "autocomplete-list");
+                    a.setAttribute("class", "autocomplete-items");
+
+                    this.parentNode.appendChild(a);
+
+                    for (i = 0; i < arr.length; i++) {
+
+                        if (arr[i].noHp.substr(0, val.length) == val) {
+
+                            b = document.createElement("DIV");
+
+                            b.innerHTML = "<strong>" + arr[i].noHp.substr(0, val.length) + "</strong>";
+                            b.innerHTML += arr[i].noHp.substr(val.length);
+
+                            b.innerHTML += "<input type='hidden' value='" + arr[i].noHp + "'>";
+
+                            b.addEventListener("click", function (e) {
+                                inp.value = this.getElementsByTagName("input")[0].value;
+                                auto(inp.value);
+                                closeAllLists();
+                            });
+                            a.appendChild(b);
+                        }
+                    }
+                });
+
+                function closeAllLists(elmnt) {
+                    var x = document.getElementsByClassName("autocomplete-items");
+                    for (var i = 0; i < x.length; i++) {
+                        if (elmnt != x[i] && elmnt != inp) {
+                            x[i].parentNode.removeChild(x[i]);
+                        }
+                    }
+                }
+
+                function addActive(x) {
+
+                    if (!x)
+                        return false;
+
+
+                    removeActive(x);
+                    if (currentFocus >= x.length)
+                        currentFocus = 0;
+                    if (currentFocus < 0)
+                        currentFocus = (x.length - 1);
+
+                    x[currentFocus].classList.add("autocomplete-active");
+                }
+                function removeActive(x) {
+
+                    for (var i = 0; i < x.length; i++) {
+                        x[i].classList.remove("autocomplete-active");
+                    }
+                }
+
+                function auto(inp) {
+
+                    let newDataP = dataP.filter(function (data) {
+                        return data.noHp == inp;
+                    });
+
+                    let date = new Date().toISOString().substring(0, 10);
+                    $("#email").val(newDataP[0].email);
+                    $("#nama").val(newDataP[0].nama);
+                    $("#alamat").val(newDataP[0].alamat);
+                    $("#tanggal").val(date);
+            }
+            }
+
+
+            $.ajax({
+                url: "http://localhost:9000/admin/customers",
+                dataType: "json",
+                async: false,
+                cache: true,
+                data: {
+                    search: search.value
+                },
+                success: function (data) {
+                    dataP = data;
+
+                }
+
+            });
+
+            autocomplete(document.getElementById("no_hp"), dataP);
+
+            $(document).ready(function () {
+                $("#form-save-customer").submit(function (e) {
+                    e.preventDefault();
+                    saveCustomer();
+                })
+            });
+            
+            
+            //simpan customer dan order produk
+            function saveCustomer() {
+                console.log("masuk");
+                let no_hp_form = document.querySelector("#no_hp").value;
+                let email_form = document.querySelector("#email").value;
+                let alamat_form = document.querySelector("#alamat").value;
+                let nama_form = document.querySelector("#nama").value;
+
+
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:9000/admin/savecustomer",
+                    dataType: "html",
+                    data: {
+                        "nama": nama_form,
+                        "no_hp": no_hp_form,
+                        "email": email_form,
+                        "alamat": alamat_form
+                    },
+
+                    error: function (req, status, err) {
+                        console.log(status, err);
+                    },
+                    success: function (res) {
+//                        window.location = "http://localhost:9000/admin/checkout";
+                    }
+
+                }).then(function (data) {
+                    let tanggal = $("#tanggal").val();
+                   
+                    let ls = JSON.parse(localStorage.getItem("shoppingCart"));
+                    let form = [];
+                    for(let i = 0; i < ls.length; i++){
+                       
+                        form.push({
+                            jumlahOrder : ls[i].qty,
+                            totalHarga : ls[i].total,
+                            produkId : Number(ls[i].id),
+                            tanggal : tanggal,
+                            pelangganId : Number(data)
+                        })
+                     
+
+                    }
+                   
+                    console.log(JSON.stringify(form));
+                    $.ajax({
+                        method: "POST",
+                        contentType: "application/json",
+                        url: "http://localhost:9000/admin/savetransaction",
+                        dataType: "html",
+                        data: JSON.stringify(form),
+                        error: function (req, status, err) {
+                            console.log(req, status, err);
+                        },
+                        success: function (res) {
+                            console.log(res);
+                            localStorage.clear();
+                        },
+                    })
+                })
+            }
+//            save.addEventListener("click", function (e) {
+//                e.preventDefault();
+//                let no_hp_form = document.querySelector("#no_hp").value;
+//                let email_form = document.querySelector("#email").value;
+//                let alamat_form = document.querySelector("#alamat").value;
+//
+//
+//                if (no_hp_form != "" && email_form != "") {
+//                    $.ajax({
+//                        method: "POST",
+//                        url: "http://localhost:9000/admin/savecustomer",
+//                        dataType: "html",
+//                        data: {
+//
+//                            "no_hp": no_hp_form,
+//                            "email": email_form,
+//                            "alamat": alamat_form
+//                        },
+//
+//                        error: function (req, status, err) {
+//                            console.log(status, err);
+//                        },
+//                        success: function (res) {
+//                            console.log(res);
+//                        },
+//                    })
+//                            .then(function (data) {
+//                                $.ajax({
+//                                    method: "GET",
+//                                    url: "http://jsonplaceholder.typicode.com/posts",
+//                                    dataType: "json",
+//                                    error: function (req, status, err) {
+//                                        console.log(status, err);
+//                                    },
+//                                    success: function (res) {
+//                                        console.log(res);
+//                                    },
+//                                })
+//                            })
+//
+//                } else {
+//                    alert("Form tidak boleh kosong");
+//                }
+//
+//
+//
+//
+//
+//
+//            });
+        </script>
+    </th:block>
+</body>
 </html>

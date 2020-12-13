@@ -5,7 +5,7 @@
  */
 package com.project.inventory.repository;
 
-import com.project.inventory.entity.Kategori;
+import com.project.inventory.entity.Transaksi;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author i am me
  */
 @Repository
-public interface KategoriRepository extends CrudRepository<Kategori, Integer>{
+public interface TransaksiRepository extends CrudRepository<Transaksi, Integer>{
     
 }

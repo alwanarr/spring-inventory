@@ -52,7 +52,7 @@ public class ProdukService {
 
         Produk produkBaru = produkRepo.save(p);
 
-        String uploadDir = "product/" + produkBaru.getId();
+        String uploadDir = "product/" + produkBaru.getIdProduk();
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
     }
@@ -80,7 +80,7 @@ public class ProdukService {
 
         Produk produkUpdate = produkRepo.save(p);
 
-        String uploadDir = "product/" + produkUpdate.getId();
+        String uploadDir = "product/" + produkUpdate.getIdProduk();
         File f = new File(uploadDir + '/' + namaGambar);
         f.delete();
         

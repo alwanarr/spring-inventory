@@ -11,6 +11,14 @@
     <class>com.project.inventory.entity.Transaksi</class>
     <class>com.project.inventory.entity.Pemasok</class>
     <class>com.project.inventory.entity.Kategori_1</class>
+    <class>com.project.inventory.Kategori</class>
+    <class>com.project.inventory.Transaksi</class>
+    <class>com.project.inventory.User</class>
+    <class>com.project.inventory.Status</class>
+    <class>com.project.inventory.Produk</class>
+    <class>com.project.inventory.Pemasok</class>
+    <class>com.project.inventory.Tipe</class>
+    <class>com.project.inventory.Pelanggan</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/inventory?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

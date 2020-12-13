@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Transaksi.findAll", query = "SELECT t FROM Transaksi t")
-    , @NamedQuery(name = "Transaksi.findById", query = "SELECT t FROM Transaksi t WHERE t.id = :id")
+    , @NamedQuery(name = "Transaksi.findByIdTransaksi", query = "SELECT t FROM Transaksi t WHERE t.idTransaksi = :idTransaksi")
     , @NamedQuery(name = "Transaksi.findByJumlahOrder", query = "SELECT t FROM Transaksi t WHERE t.jumlahOrder = :jumlahOrder")
     , @NamedQuery(name = "Transaksi.findByTotalHarga", query = "SELECT t FROM Transaksi t WHERE t.totalHarga = :totalHarga")
     , @NamedQuery(name = "Transaksi.findByTanggal", query = "SELECT t FROM Transaksi t WHERE t.tanggal = :tanggal")
@@ -45,8 +45,8 @@ public class Transaksi implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_transaksi")
+    private Integer idTransaksi;
     @Column(name = "jumlah_order")
     private Integer jumlahOrder;
     @Column(name = "total_harga")
@@ -64,32 +64,32 @@ public class Transaksi implements Serializable {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-    @JoinColumn(name = "pelanggan_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Pelanggan pelangganId;
-    @JoinColumn(name = "produk_id", referencedColumnName = "id")
+    @JoinColumn(name = "produk_id", referencedColumnName = "id_produk")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Produk produkId;
+    @JoinColumn(name = "pelanggan_id", referencedColumnName = "id_pelanggan")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Pelanggan pelangganId;
 
     public Transaksi() {
     }
 
-    public Transaksi(Integer id) {
-        this.id = id;
+    public Transaksi(Integer idTransaksi) {
+        this.idTransaksi = idTransaksi;
     }
 
-    public Transaksi(Integer id, Date createdAt, Date updatedAt) {
-        this.id = id;
+    public Transaksi(Integer idTransaksi, Date createdAt, Date updatedAt) {
+        this.idTransaksi = idTransaksi;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdTransaksi() {
+        return idTransaksi;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdTransaksi(Integer idTransaksi) {
+        this.idTransaksi = idTransaksi;
     }
 
     public Integer getJumlahOrder() {
@@ -132,14 +132,6 @@ public class Transaksi implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Pelanggan getPelangganId() {
-        return pelangganId;
-    }
-
-    public void setPelangganId(Pelanggan pelangganId) {
-        this.pelangganId = pelangganId;
-    }
-
     public Produk getProdukId() {
         return produkId;
     }
@@ -148,10 +140,18 @@ public class Transaksi implements Serializable {
         this.produkId = produkId;
     }
 
+    public Pelanggan getPelangganId() {
+        return pelangganId;
+    }
+
+    public void setPelangganId(Pelanggan pelangganId) {
+        this.pelangganId = pelangganId;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idTransaksi != null ? idTransaksi.hashCode() : 0);
         return hash;
     }
 
@@ -162,7 +162,7 @@ public class Transaksi implements Serializable {
             return false;
         }
         Transaksi other = (Transaksi) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idTransaksi == null && other.idTransaksi != null) || (this.idTransaksi != null && !this.idTransaksi.equals(other.idTransaksi))) {
             return false;
         }
         return true;
@@ -170,7 +170,7 @@ public class Transaksi implements Serializable {
 
     @Override
     public String toString() {
-        return "com.project.inventory.entity.Transaksi[ id=" + id + " ]";
+        return "com.project.inventory.entity.Transaksi[ idTransaksi=" + idTransaksi + " ]";
     }
     
 }

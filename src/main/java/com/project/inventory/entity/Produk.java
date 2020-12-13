@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Produk.findAll", query = "SELECT p FROM Produk p")
-    , @NamedQuery(name = "Produk.findById", query = "SELECT p FROM Produk p WHERE p.id = :id")
+    , @NamedQuery(name = "Produk.findByIdProduk", query = "SELECT p FROM Produk p WHERE p.idProduk = :idProduk")
     , @NamedQuery(name = "Produk.findByNama", query = "SELECT p FROM Produk p WHERE p.nama = :nama")
     , @NamedQuery(name = "Produk.findByHargaJual", query = "SELECT p FROM Produk p WHERE p.hargaJual = :hargaJual")
     , @NamedQuery(name = "Produk.findByHargaAwal", query = "SELECT p FROM Produk p WHERE p.hargaAwal = :hargaAwal")
@@ -47,8 +47,8 @@ public class Produk implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_produk")
+    private Integer idProduk;
     @Basic(optional = false)
 //    @NotNull
 //    @Size(min = 1, max = 30)
@@ -71,7 +71,7 @@ public class Produk implements Serializable {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Status statusId;
-    @JoinColumn(name = "pemasok_id", referencedColumnName = "id")
+    @JoinColumn(name = "pemasok_id", referencedColumnName = "id_pemasok")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Pemasok pemasokId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "produkId", fetch = FetchType.LAZY)
@@ -80,22 +80,22 @@ public class Produk implements Serializable {
     public Produk() {
     }
 
-    public Produk(Integer id) {
-        this.id = id;
+    public Produk(Integer idProduk) {
+        this.idProduk = idProduk;
     }
 
-    public Produk(Integer id, String nama, String gambar) {
-        this.id = id;
+    public Produk(Integer idProduk, String nama, String gambar) {
+        this.idProduk = idProduk;
         this.nama = nama;
         this.gambar = gambar;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdProduk() {
+        return idProduk;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdProduk(Integer idProduk) {
+        this.idProduk = idProduk;
     }
 
     public String getNama() {
@@ -174,7 +174,7 @@ public class Produk implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idProduk != null ? idProduk.hashCode() : 0);
         return hash;
     }
 
@@ -185,7 +185,7 @@ public class Produk implements Serializable {
             return false;
         }
         Produk other = (Produk) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idProduk == null && other.idProduk != null) || (this.idProduk != null && !this.idProduk.equals(other.idProduk))) {
             return false;
         }
         return true;
@@ -193,7 +193,7 @@ public class Produk implements Serializable {
 
     @Override
     public String toString() {
-        return "com.project.inventory.entity.Produk[ id=" + id + " ]";
+        return "com.project.inventory.entity.Produk[ idProduk=" + idProduk + " ]";
     }
     
 }

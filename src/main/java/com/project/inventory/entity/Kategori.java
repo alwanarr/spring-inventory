@@ -5,7 +5,6 @@
  */
 package com.project.inventory.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -50,10 +49,8 @@ public class Kategori implements Serializable {
     @Column(name = "nama_kategori", length = 20)
     private String namaKategori;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kategoriId", fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Produk> produkList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kategoriId", fetch = FetchType.LAZY)
-    @JsonIgnore
     private List<Tipe> tipeList;
 
     public Kategori() {
@@ -126,5 +123,5 @@ public class Kategori implements Serializable {
     public String toString() {
         return "com.project.inventory.entity.Kategori[ id=" + id + " ]";
     }
-
+    
 }
