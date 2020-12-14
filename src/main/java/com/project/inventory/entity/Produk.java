@@ -5,6 +5,8 @@
  */
 package com.project.inventory.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -137,7 +139,7 @@ public class Produk implements Serializable {
     public void setGambar(String gambar) {
         this.gambar = gambar;
     }
-
+    @JsonBackReference("produk-kategori")
     public Kategori getKategoriId() {
         return kategoriId;
     }
@@ -145,7 +147,7 @@ public class Produk implements Serializable {
     public void setKategoriId(Kategori kategoriId) {
         this.kategoriId = kategoriId;
     }
-
+    @JsonBackReference("produk-status")
     public Status getStatusId() {
         return statusId;
     }
@@ -153,7 +155,7 @@ public class Produk implements Serializable {
     public void setStatusId(Status statusId) {
         this.statusId = statusId;
     }
-
+    @JsonBackReference
     public Pemasok getPemasokId() {
         return pemasokId;
     }
@@ -163,6 +165,7 @@ public class Produk implements Serializable {
     }
 
     @XmlTransient
+    @JsonManagedReference(value = "produk-transaksi" )
     public List<Transaksi> getTransaksiList() {
         return transaksiList;
     }

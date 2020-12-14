@@ -5,6 +5,8 @@
  */
 package com.project.inventory.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -77,7 +79,7 @@ public class Tipe implements Serializable {
     public void setNama(String nama) {
         this.nama = nama;
     }
-
+    @JsonBackReference
     public Kategori getKategoriId() {
         return kategoriId;
     }

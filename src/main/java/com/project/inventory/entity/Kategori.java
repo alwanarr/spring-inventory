@@ -5,6 +5,7 @@
  */
 package com.project.inventory.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -82,6 +83,7 @@ public class Kategori implements Serializable {
     }
 
     @XmlTransient
+    @JsonManagedReference("produk-kategori")
     public List<Produk> getProdukList() {
         return produkList;
     }
@@ -91,6 +93,7 @@ public class Kategori implements Serializable {
     }
 
     @XmlTransient
+    @JsonManagedReference
     public List<Tipe> getTipeList() {
         return tipeList;
     }

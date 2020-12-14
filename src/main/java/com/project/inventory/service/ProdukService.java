@@ -10,12 +10,17 @@ import com.project.inventory.entity.Kategori;
 import com.project.inventory.entity.Pemasok;
 import com.project.inventory.entity.Produk;
 import com.project.inventory.entity.Status;
+import com.project.inventory.exception.ProdukReduceException;
 import com.project.inventory.repository.ProdukRepository;
 import java.io.File;
 import org.springframework.util.StringUtils;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -93,5 +98,28 @@ public class ProdukService {
    
    public Iterable<Produk> getStockOfProduk(){
        return produkRepo.findAllProdukByStok();
+   }
+   
+   @Transactional(propagation = Propagation.MANDATORY)
+   public ResponseEntity<String> reduceStok(Produk id, Integer stok) throws ProdukReduceException{
+       
+       Integer idProduk = id.getIdProduk();
+//       System.out.println("id produk service" + idProduk);
+//       System.out.println("stok service" + stok);
+
+       Produk p = produkRepo.findById(idProduk).get();
+       if(p == null) {
+           throw new ProdukReduceException("Produk tidak ditemukan");
+       }else if(p.getStok() - stok < 0){
+           throw new ProdukReduceException("Stok " + p.getNama() + " tidak Mencukupi, stok produk adalah " + p.getStok());
+       } 
+       p.setStok(p.getStok() - stok);
+       produkRepo.save(p);
+       
+        
+        return new ResponseEntity<>("transaksi sukses", HttpStatus.OK);
+       
+       
+       
    }
 }

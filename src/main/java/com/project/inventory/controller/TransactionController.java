@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.project.inventory.config.EntityIdResolver;
 import com.project.inventory.entity.Transaksi;
+import com.project.inventory.exception.ProdukReduceException;
 import com.project.inventory.service.TransaksiService;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,13 @@ public class TransactionController {
     @PostMapping("/admin/savetransaction")
     @ResponseBody
     public ResponseEntity<String> saveAllTransaksi(@RequestBody List<Transaksi> transaksiList){
-        transaksiService.saveAllTransaksi(transaksiList);
+        try{
+            transaksiService.saveAllTransaksi(transaksiList);
+        }catch( ProdukReduceException p){
+            return new ResponseEntity<>( p.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        
+        
         return new ResponseEntity<>("sukses", HttpStatus.CREATED);
     }
 }

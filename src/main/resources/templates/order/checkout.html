@@ -230,7 +230,7 @@ and open the template in the editor.
             
             //simpan customer dan order produk
             function saveCustomer() {
-                console.log("masuk");
+                
                 let no_hp_form = document.querySelector("#no_hp").value;
                 let email_form = document.querySelector("#email").value;
                 let alamat_form = document.querySelector("#alamat").value;
@@ -253,6 +253,10 @@ and open the template in the editor.
                     },
                     success: function (res) {
 //                        window.location = "http://localhost:9000/admin/checkout";
+                          //jika transaksi gagal
+                          //maka dapatkan id pelanggan, lalu hapus pelanggan
+                          //menggunakan transaksi
+                          console.log(res);
                     }
 
                 }).then(function (data) {
@@ -273,7 +277,7 @@ and open the template in the editor.
 
                     }
                    
-                    console.log(JSON.stringify(form));
+//                    console.log(JSON.stringify(form));
                     $.ajax({
                         method: "POST",
                         contentType: "application/json",
@@ -281,11 +285,11 @@ and open the template in the editor.
                         dataType: "html",
                         data: JSON.stringify(form),
                         error: function (req, status, err) {
-                            console.log(req, status, err);
+                            alert(req.responseText);
                         },
                         success: function (res) {
                             console.log(res);
-                            localStorage.clear();
+//                            localStorage.clear();
                         },
                     })
                 })

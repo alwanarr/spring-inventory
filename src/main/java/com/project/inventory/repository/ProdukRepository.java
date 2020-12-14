@@ -6,6 +6,7 @@
 package com.project.inventory.repository;
 
 import com.project.inventory.entity.Produk;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +26,10 @@ public interface ProdukRepository extends CrudRepository<Produk, Integer> {
     
     @org.springframework.data.jpa.repository.Query(value = "SELECT * FROM `produk` WHERE stok < 1", nativeQuery = true)
     public Iterable<Produk> findAllProdukByStok();
+    
+    
+    @Modifying
+    @org.springframework.data.jpa.repository.Query(value = "UPDATE produk SET stok = stok - :stok "
+                                                            + "where id_produk = :id", nativeQuery = true)
+    public Iterable<Produk> reduceProdukByStok( @Param("id") Integer id, @Param("stok") Integer stok);
 }
