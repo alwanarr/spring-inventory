@@ -46,5 +46,9 @@ public class KategoriService {
     public void deletCategory(Integer id ){
           kategoriRepo.deleteById(id);
     }
+
+    public void save(Kategori kategori) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

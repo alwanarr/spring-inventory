@@ -5,6 +5,7 @@
  */
 package com.project.inventory.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -56,12 +57,12 @@ public class Transaksi implements Serializable {
     private Date tanggal;
     @Basic(optional = false)
 //    @NotNull
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @Basic(optional = false)
 //    @NotNull
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
     @JoinColumn(name = "produk_id", referencedColumnName = "id_produk")
@@ -131,7 +132,7 @@ public class Transaksi implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
-
+    @JsonBackReference(value = "produk-transaksi")
     public Produk getProdukId() {
         return produkId;
     }
@@ -139,7 +140,7 @@ public class Transaksi implements Serializable {
     public void setProdukId(Produk produkId) {
         this.produkId = produkId;
     }
-
+    @JsonBackReference(value = "pelanggan-transaksi")
     public Pelanggan getPelangganId() {
         return pelangganId;
     }

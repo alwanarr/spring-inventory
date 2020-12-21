@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/fragment}">
+    <body>
+        <h1>Form</h1>
+        <div layout:fragment="sidebar">
+            <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
+        </div>
+        <div layout:fragment="content">
+            <div class="card ml-3 mt-5 shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <form action="#" th:action="@{/form}" th:object="${person}" method="post">
+                            <table>
+                                <tr>
+                                    <td>Name:</td>
+                                    <td><input type="text"  th:field="*{name}"  /></td>
+
+                                </tr>
+                                <tr>
+                                    <td>Age:</td>
+                                    <td><input type="text"  /></td>
+
+                                </tr>
+                                <tr>
+                                    <td><button type="submit">Submit</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

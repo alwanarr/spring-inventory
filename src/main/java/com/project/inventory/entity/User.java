@@ -44,34 +44,34 @@ public class User implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-//    @NotNull
-//    @Size(min = 1, max = 60)
-    @Column(name = "nama", length = 60)
+    @NotNull
+    @Size(min = 1, max = 60)
+    @Column(name = "nama")
     private String nama;
     @Basic(optional = false)
-//    @NotNull
+    @NotNull
     @Lob
-//    @Size(min = 1, max = 65535)
-    @Column(name = "alamat", length = 65535)
+    @Size(min = 1, max = 65535)
+    @Column(name = "alamat")
     private String alamat;
     @Basic(optional = false)
-//    @NotNull
-//    @Size(min = 1, max = 18)
-    @Column(name = "no_hp", length = 18)
+    @NotNull
+    @Size(min = 1, max = 18)
+    @Column(name = "no_hp")
     private String noHp;
     @Basic(optional = false)
-//    @NotNull
-//    @Size(min = 1, max = 255)
-    @Column(name = "password", length = 255)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "password")
     private String password;
     @Basic(optional = false)
-//    @NotNull
+    @NotNull
     @Column(name = "active")
-    private short active;
+    private boolean active;
     @Basic(optional = false)
-//    @NotNull
-//    @Size(min = 1, max = 25)
-    @Column(name = "roles", length = 25)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "roles")
     private String roles;
 
     public User() {
@@ -81,7 +81,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String nama, String alamat, String noHp, String password, short active, String roles) {
+    public User(Integer id, String nama, String alamat, String noHp, String password, boolean active, String roles) {
         this.id = id;
         this.nama = nama;
         this.alamat = alamat;
@@ -131,11 +131,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public short getActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setActive(short active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

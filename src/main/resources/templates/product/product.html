@@ -24,13 +24,22 @@ and open the template in the editor.
 
                     <nav >
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" 
+                            <a 
+                                sec:authorize="hasRole('KEPALAGUDANG')"
+                                class="nav-item nav-link " 
+                                id="nav-home-tab" 
+                                data-toggle="tab" 
+                                href="#produk-konfirmasi" 
+                                role="tab" 
+                                aria-controls="produk-konfirmasi" 
+                                aria-selected="true">Konfirmasi Produk</a>
+                            <a class="nav-item nav-link" 
                                id="nav-home-tab" 
                                data-toggle="tab" 
                                href="#produk" 
                                role="tab" 
                                aria-controls="nav-home" 
-                               aria-selected="true">Produk</a>
+                               aria-selected="false">Produk</a>
                             <a class="nav-item nav-link" 
                                id="nav-profile-tab" 
                                data-toggle="tab" 
@@ -47,17 +56,59 @@ and open the template in the editor.
                                aria-selected="false">Produk habis</a>
                         </div>
                     </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" 
+                    <div class="tab-content" id="nav-tabContent" >
+                        <div class="tab-pane fade show active" sec:authorize="hasRole('KEPALAGUDANG')" id="produk-konfirmasi" role="tabpanel" aria-labelledby="produk-konfirmasi-tab" >
+                            <h1 class="text-center mt-3">Konfirmasi Produk</h1>
+                            <table class="table table-striped mt-4">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">No</th>
+                                        <th scope="col"class="text-center">Nama</th>
+                                        <th scope="col" class="text-center">Harga Jual</th>
+                                        <th scope="col" class="text-center">Harga Awal</th>
+                                        <th scope="col" class="text-center">Stok</th>
+                                        <th scope="col" class="text-center">Kategori</th>
+                                        <th scope="col" class="text-center">Pemasok</th>
+                                        <th scope="col" class="text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr  th:each=" accp, count :${accproducts}" >
+                                        <td class="text-center" th:text="${count.count}"></td>
+                                        <td class="text-center" th:text="${accp.nama}"></td>
+                                        <td class="text-center" th:text="${accp.hargaJual}"></td>
+                                        <td class="text-center" th:text="${accp.hargaAwal}"></td>
+                                        <td class="text-center" th:text="${accp.stok}"></td>
+                                        <td class="text-center" th:text="${accp.kategoriId.namaKategori}"></td>
+                                        <td class="text-center" th:text="${accp.pemasokId.nama}"></td>
+                                        <td class="text-center">
+                                            <a th:href="@{/kepalagudang/product/{id}?status=2 (id=${accp.idProduk})}" class="btn btn-success">
+                                                <i class="fa fa-check text-light" aria-hidden="true"></i>
+                                            </a>
+                                            <a th:href="@{/kepalagudang/product/reject/{id}?status=3 (id=${accp.idProduk})}" class="btn btn-danger">
+                                                <i class="fa fa-times text-light" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+                        <div class="tab-pane fade  " 
                              id="produk" 
                              role="tabpanel" 
                              aria-labelledby="nav-home-tab">
                             <h1 class="text-center mt-3">Daftar Produk</h1>
                             <a  th:href="@{/product/add-product}"  class="btn btn-primary ml-4"
                                 >
+                                
                                 Tambah Produk
                             </a>
-
+                            
                             <table class="table table-striped mt-4">
                                 <thead>
                                     <tr>
@@ -82,35 +133,24 @@ and open the template in the editor.
                                         <td th:text="${p.pemasokId.nama}"></td>
                                         <td>
                                             <a 
-                                                    class="btn btn-warning edit-form"
-                                                    th:href="@{/product/edit-product/{id} (id=${p.id})}"
-                                                    >
+                                                class="btn btn-warning edit-form"
+                                                th:href="@{/product/edit-product/{id} (id=${p.idProduk})}"
+                                                >
                                                 <i class="fa fa-pencil text-light" ></i>
                                             </a>
 
                                             <a class="btn btn-danger delete-confirm"
-                                               th:data-id ="${p.id}"
+                                               th:data-id ="${p.idProduk}"
                                                >
                                                 <i class="fa fa-trash text-light" ></i>
                                             </a>
-
-<!--                                            <button type="button" 
-                                                    class="btn btn-warning view-form"
-                                                    data-toggle="modal" 
-                                                    data-target="#viewdata"
-                                                    th:data-id="${p.id}"
-                                                    >
-                                                <i class="fa fa-eye text-light" aria-hidden="true"></i>
-
-                                            </button>-->
-
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                           <th:block th:replace="product/rejected-product::rejected_product"></th:block>
+                            <th:block th:replace="product/rejected-product::rejected_product"></th:block>
                         </div>
                         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                             <th:block th:replace="product/stokOfProduct::stok_product"></th:block>
@@ -121,94 +161,23 @@ and open the template in the editor.
             </div>
 
 
-<!--            modal view
-            <div class="modal fade" id="viewdata" 
-                 tabindex="-1"
-                 role="dialog" 
-                 aria-labelledby="tambahdata" 
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Tambah Produk</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form th:action="@{/product/saveproduct}" 
-                                  method="POST"
-                                  id="addproduk"
-                                  enctype="multipart/form-data">
 
-                                <div class="form-group">
-                                    <label for="nama_produk" class="col-form-label">Nama Produk :</label>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           id="nama_produk" 
-                                           name="namaproduk"
-                                           placeholder="Masukan Nama" disabled=""/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="harga_jual" class="col-form-label">Harga Jual :</label>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           id="harga_jual" 
-                                           name="harga_jual"
-                                           placeholder="Masukan Harga Jual" disabled=""/>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="harga_awal" class="col-form-label">Harga Awal :</label>
-                                    <input type="text" 
-                                           class="form-control" 
-                                           id="harga_awal" 
-                                           name="harga_awal"
-                                           placeholder="Masukan Harga Awal" disabled=""/>
-                                </div>
-
-                                <div class="form-group" >
-                                    <label for="stok" class="col-form-label">Stok :</label>
-
-                                    <input type="number" 
-                                           class="form-control" 
-                                           id="stok" 
-                                           name="stok"
-                                           placeholder="Masukan Stok" disabled=""/>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label for="stok" class="col-form-label">Kategori :</label>
-
-                                    <select class="form-control" name="kategori" id="kategori" disabled=""> 
-                                        <option value="" disabled="" selected="">--Pilih Kategori--</option>
-                                        <option th:each="k:${kategori}"
-                                                th:value="${k.id}"
-                                                th:text="${k.namaKategori}"></option>
-                                    </select>
-                                </div>
-
-
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" 
-                                    class="btn btn-primary"
-                                    id="submit-form"
-                                    onclick="document.getElementById('addproduk').submit()">
-                                Simpan</button>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
         </div>
 
 
     <th:block layout:fragment="optional" >
         <script th:inline="javascript">
+
+            var htmldata = [[${success}]];
+
+            if (htmldata) {
+
+                Swal.fire(
+                        'Good job!',
+                        htmldata,
+                        'success'
+                        )
+            }
             $(document).ready(function () {
                 $('.view-form').on("click", function () {
                     let id = $(this).attr('data-id');
@@ -218,7 +187,7 @@ and open the template in the editor.
                         $('#harga_awal').val(data.hargaAwal);
                         $('#stok').val(data.stok);
                         $('#kategori').val(data.kategoriId.id);
-                        console.log(data);
+
                     })
                 })
             });

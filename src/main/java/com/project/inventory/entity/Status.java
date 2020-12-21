@@ -5,6 +5,7 @@
  */
 package com.project.inventory.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -80,10 +81,11 @@ public class Status implements Serializable {
     }
 
     @XmlTransient
+    @JsonManagedReference("produk-status")
     public List<Produk> getProdukList() {
         return produkList;
     }
-
+    
     public void setProdukList(List<Produk> produkList) {
         this.produkList = produkList;
     }

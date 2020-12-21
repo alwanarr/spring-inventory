@@ -33,7 +33,8 @@ and open the template in the editor.
                                    class="form-control" 
                                    id="nama_produk" 
                                    name="namaproduk"
-                                   placeholder="Masukan Nama"/>
+                                   placeholder="Masukan Nama"
+                                   required=""/>
                         </div>
 
                         <div class="form-group">
@@ -43,7 +44,9 @@ and open the template in the editor.
                                    class="form-control" 
                                    id="harga_jual" 
                                    name="harga_jual"
-                                   placeholder="Masukan Harga Jual"/>
+                                   placeholder="Masukan Harga Jual"
+                                   required=""
+                                   oninput="this.value = Math.abs(this.value)"/>
                         </div>
 
                         <div class="form-group">
@@ -52,7 +55,9 @@ and open the template in the editor.
                                    class="form-control" 
                                    id="harga_awal" 
                                    name="harga_awal"
-                                   placeholder="Masukan Harga Awal"/>
+                                   placeholder="Masukan Harga Awal"
+                                   required=""
+                                   oninput="this.value = Math.abs(this.value)"/>
                         </div>
 
                         <div class="form-group">
@@ -61,14 +66,16 @@ and open the template in the editor.
                                    class="form-control" 
                                    id="stok" 
                                    name="stok"
-                                   placeholder="Masukan Stok"/>
+                                   placeholder="Masukan Stok"
+                                   required=""
+                                   oninput="this.value = Math.abs(this.value)"/>
                         </div>
 
 
                         <div class="form-group">
                             <label for="kategori" 
                                    class="col-form-label">Kategori : </label>
-                            <select class="form-control" name="kategori"> 
+                            <select class="form-control" name="kategori" required=""> 
                                 <option value="" disabled="" selected="">--Pilih Kategori--</option>
                                 <option th:each="k:${kategori}"
                                         th:value="${k.id}"
@@ -79,10 +86,10 @@ and open the template in the editor.
                         <div class="form-group">
                             <label for="pemasok" 
                                    class="col-form-label">Pemasok : </label>
-                            <select class="form-control" name="pemasok"> 
+                            <select class="form-control" name="pemasok" required="">  
                                 <option value="" disabled="" selected="">--Pilih Pemasok--</option>
                                 <option th:each="p:${pemasok}"
-                                        th:value="${p.id}"
+                                        th:value="${p.idPemasok}"
                                         th:text="${p.nama}"></option>
                             </select>
                         </div>
@@ -93,7 +100,7 @@ and open the template in the editor.
                                    class="col-form-label">Gambar Produk : </label>
                             <input type="file" 
                                    class="form-control"
-                                   name="gambar_produk" />
+                                   name="gambar_produk" required=""/>
                         </div>
                         
                          <div class="float-right mt-4">

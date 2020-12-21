@@ -5,6 +5,9 @@
  */
 package com.project.inventory.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -38,6 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pelanggan.findByNama", query = "SELECT p FROM Pelanggan p WHERE p.nama = :nama")
     , @NamedQuery(name = "Pelanggan.findByNoHp", query = "SELECT p FROM Pelanggan p WHERE p.noHp = :noHp")
     , @NamedQuery(name = "Pelanggan.findByEmail", query = "SELECT p FROM Pelanggan p WHERE p.email = :email")})
+//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="idPelanggan")
 public class Pelanggan implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -121,6 +125,7 @@ public class Pelanggan implements Serializable {
     }
 
     @XmlTransient
+    @JsonManagedReference(value = "pelanggan-transaksi")
     public List<Transaksi> getTransaksiList() {
         return transaksiList;
     }

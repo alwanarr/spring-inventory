@@ -6,18 +6,52 @@ and open the template in the editor.
 -->
 <span th:fragment="navbar-admin">
     <a href="/dashboard" 
+       sec:authorize="hasAnyRole('ADMIN', 'KEPALAGUDANG', 'PEMILIK')"
        th:classappend="${#request.getRequestURI() == '/dashboard' ? 'active-menu' : ''}"
        class="list-group-item list-group-item-action bg-light">Dashboard</a>
     <a href="/admin/order" 
+       sec:authorize="hasRole('ADMIN')"
        th:classappend="${#request.getRequestURI() == '/admin/order' ? 'active-menu' : ''}"
        class="list-group-item list-group-item-action bg-light">Order</a>
     <a href="/products" 
+       sec:authorize="hasAnyRole('ADMIN', 'KEPALAGUDANG', 'PEMILIK')"
        th:classappend="${#request.getRequestURI() == '/products' ? 'active-menu' : ''}"
        class="list-group-item list-group-item-action bg-light">Produk</a>
     <a href="/admin/supplier" 
+       sec:authorize="hasRole('ADMIN')"
        th:classappend="${#request.getRequestURI() == '/admin/supplier' ? 'active-menu' : ''}"
        class="list-group-item list-group-item-action bg-light">Pemasok</a>
     <a href="/admin/categories" 
+       sec:authorize="hasRole('ADMIN')"
        th:classappend="${#request.getRequestURI() == '/admin/categories' ? 'active-menu' : ''}"
        class="list-group-item list-group-item-action bg-light">Kategori</a>
+       
+<!--    //kepala gudang-->
+   <a href="/traksaksi/report" 
+       sec:authorize="hasAnyRole('KEUANGAN', 'PEMILIK')"
+       th:classappend="${#request.getRequestURI() == '/traksaksi/report' ? 'active-menu' : ''}"
+       class="list-group-item list-group-item-action bg-light">Laporan Transaksi</a>
+
+
+    <!--keuangan-->
+     <a href="/products/report" 
+       sec:authorize="hasAnyRole('KEPALAGUDANG', 'PEMILIK')"
+       th:classappend="${#request.getRequestURI() == '/products/report' ? 'active-menu' : ''}"
+       class="list-group-item list-group-item-action bg-light">Laporan Produk</a>
+       
+    <!--PEMILIK-->
+
+    <a th:href="@{/logout}" 
+       onclick="event.preventDefault();
+               document.getElementById('frm-logout').submit();"
+       class="list-group-item list-group-item-action bg-light"     >
+        Logout
+    </a> 
+
+    <form id="frm-logout" 
+          th:action="@{/logout}" 
+          method="post" style="display: none;">
+
+    </form>
+
 </span>

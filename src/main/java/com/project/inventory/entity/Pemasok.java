@@ -5,6 +5,7 @@
  */
 package com.project.inventory.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -127,6 +128,7 @@ public class Pemasok implements Serializable {
     }
 
     @XmlTransient
+    @JsonManagedReference
     public List<Produk> getProdukList() {
         return produkList;
     }

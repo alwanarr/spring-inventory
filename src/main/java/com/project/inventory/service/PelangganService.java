@@ -32,8 +32,7 @@ public class PelangganService {
         Pelanggan savePelanggan = new Pelanggan();
         for (Pelanggan pelanggan : p) {
             if (pelanggan.getNoHp().equals(no_hp)) {
-                isCustomerNotFound = false;
-                System.out.println("Customer has found");
+                isCustomerNotFound = false;    
                 return pelanggan;
             }
         }
@@ -48,6 +47,10 @@ public class PelangganService {
         }
         return savePelanggan;
 
+    }
+
+    public Long getCountOfCustomer() {
+        return customerRepo.count();
     }
     
     

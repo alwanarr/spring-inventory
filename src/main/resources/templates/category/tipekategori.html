@@ -68,12 +68,16 @@
                                             <input type="text" 
                                                    class="form-control nama-tipe" 
                                                    id="nama nama-tipe"
-                                                   name="nama">
+                                                   name="nama"
+                                                   required="">
                                         </div>
 
-                                       
 
-                                        <select class="form-control" name="category" id="category-id">
+
+                                        <select class="form-control" 
+                                                name="category" 
+                                                required=""
+                                                id="category-id">
                                             <option value="" 
                                                     th:disabled="disabled" 
                                                     selected="">--Pilih Kategori--</option>
@@ -87,17 +91,17 @@
                                                class="form-control kategori-tipe-id" 
                                                id="nama kategori-tipe-id"
                                                name="id">
-
+                                        <div class="float-right mt-4">
+                                            <button type="button" class="btn btn-secondary" 
+                                                    data-dismiss="modal">Close</button>
+                                            <button type="submit" 
+                                                    class="btn btn-primary"
+                                                    id="submit-form"
+                                                    >
+                                                Simpan</button>
+                                        </div>
 
                                     </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" 
-                                            class="btn btn-primary"
-                                            id="submit-form"
-                                            onclick="document.getElementById('edittipekategori').submit()">
-                                        Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -136,13 +140,17 @@
                         <div class="form-group">
                             <label for="namaKategori" 
                                    class="col-form-label">Nama : </label>
-                            <input type="text" class="form-control" id="namaKategori" name="namaKategori"/>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="namaKategori" 
+                                   name="namaKategori"
+                                   required=""/>
                         </div>
 
                         <div class="form-group">
                             <label for="namaKategori" 
                                    class="col-form-label">Nama : </label>
-                            <select class="form-control" name="category">
+                            <select class="form-control" name="category" required="">
                                 <option value="" 
                                         th:disabled="disabled" 
                                         selected="">--Pilih Kategori--</option>
@@ -151,15 +159,16 @@
                                         th:value="${k.id}" />
                             </select>
                         </div>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-secondary" 
+                                    data-dismiss="modal">Close</button>
+                            <button type="submit" 
+                                    class="btn btn-primary"
+                                    id="submit-form"
+                                    >
+                                Simpan</button>
+                        </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" 
-                            class="btn btn-primary"
-                            id="submit-form"
-                            onclick="document.getElementById('addtipekategori').submit()">
-                        Simpan</button>
                 </div>
             </div>
         </div>

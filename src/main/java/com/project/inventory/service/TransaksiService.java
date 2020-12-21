@@ -5,11 +5,15 @@
  */
 package com.project.inventory.service;
 
+import com.project.inventory.config.TanggalAndTotalharga;
 import com.project.inventory.entity.Transaksi;
+import com.project.inventory.exception.ProdukReduceException;
 import com.project.inventory.repository.TransaksiRepository;
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -21,18 +25,44 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransaksiService {
     @Autowired
     TransaksiRepository transaksiRepo;
-//    public Transaksi saveTransaction(Integer jumlah_order, Integer total_harga, 
-//            Integer produk_id, String tanggal, Integer pelanggan_id){
+    
+    @Autowired
+    ProdukService produkService;
+
+//    @Transactional
+//    public List<Transaksi>  saveAllTransaksi(List<Transaksi> transaksiList){ 
 //        
-//        
-//        
-//        return null;
+//        List<Transaksi> response = (List<Transaksi>) transaksiRepo.saveAll(transaksiList);
+//        return response;
 //    }
     
-    @Transactional
-    public List<Transaksi>  saveAllTransaksi(List<Transaksi> transaksiList){
-        
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = ProdukReduceException.class)
+    public List<Transaksi>  saveAllTransaksi(List<Transaksi> transaksiList) throws ProdukReduceException{ 
+//        for (Transaksi transaksi : transaksiList) {
+//            System.out.println("transaksi "+transaksi);
+//        }
         List<Transaksi> response = (List<Transaksi>) transaksiRepo.saveAll(transaksiList);
-        return response;
+        for (Transaksi transaksi : transaksiList) {
+            
+            produkService.reduceStok(transaksi.getProdukId(), transaksi.getJumlahOrder());
+        }
+        
+        return null;
     }
+    
+    
+    public List<TanggalAndTotalharga> getReport(){
+        return transaksiRepo.reportTransaksi();
+    }
+
+    public Double getProfit() {
+        return transaksiRepo.profit();
+    }
+    
+    
+    public List<TanggalAndTotalharga> getProfitByYear(){
+        return transaksiRepo.reportTransaksi();
+    }
+
+    
 }

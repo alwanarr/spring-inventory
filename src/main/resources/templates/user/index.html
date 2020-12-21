@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/fragment}">
+    <head>
+        <title>User</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
+        </div>
+        <div layout:fragment="content">
+            <div class="card ml-3 mt-5 shadow">
+                <div class="card-body">
+
+                    <h1 class="text-center">Daftar Pengguna</h1>
+                    <button type="button" class="btn btn-primary ml-4 tambah-data-user"
+                            data-toggle="modal" 
+                            data-target="#tambahdatauser">
+                        Tambah Pengguna
+                    </button>
+
+                    <table class="table table-striped mt-4">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Alamat</th>
+                                <th scope="col">No Hp</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="u, count :${users}">
+                                <td th:text="${count.count}"></td>
+                                <td th:text="${u.nama}"></td>
+                                <td th:text="${u.alamat}"></td>
+                                <td th:text="${u.noHp}"></td>
+                                <td>
+                                    <button type="button" 
+                                            class="btn btn-warning edit-form"
+                                            data-toggle="modal" 
+                                            data-target="#editdata"
+                                            th:data-id="${u.id}"
+                                            >
+                                        <i class="fa fa-pencil text-light" ></i>
+                                    </button>
+
+
+
+                                    <div class="modal fade" id="editdata" 
+                                         tabindex="-1"
+                                         role="dialog" 
+                                         aria-labelledby="tambahdata" 
+                                         aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form th:action="@{/user/updateuser}" method="POST" id="formedituser">
+
+                                                        <div class="form-group">
+                                                            <label for="nama" 
+                                                                   class="col-form-label">Nama:</label>
+                                                            <input type="text" 
+                                                                   class="form-control" 
+                                                                   id="nama-edit"
+                                                                   value=""
+                                                                   name="nama">
+                                                        </div>
+                                                        <div class="form-group">
+
+                                                            <input type="hidden" 
+                                                                   class="form-control" 
+                                                                   id="id-edit"
+                                                                   value=""
+                                                                   name="id">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="no_hp" 
+                                                                   class="col-form-label">No Hp: </label>
+
+                                                            <input type="text" 
+                                                                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" 
+                                                                   class="form-control" 
+                                                                   id="no_hp-edit"
+                                                                   name="no_hp"
+                                                                   maxlength="14"/>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="password" 
+                                                                   class="col-form-label">Password : </label>
+                                                            <input type="password" 
+                                                                   class="form-control" 
+                                                                   id="password-edit"
+                                                                   name="password">
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label for="alamat" class="col-form-label">Alamat : </label>
+                                                            <textarea class="form-control" 
+                                                                      id="alamat-edit" 
+                                                                      name="alamat"></textarea>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" 
+                                                            class="btn btn-primary"
+                                                            id="submit-form"
+                                                            onclick="document.getElementById('formedituser').submit()">
+                                                        Simpan</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="modal fade" id="tambahdatauser" 
+                         tabindex="-1"
+                         role="dialog" 
+                         aria-labelledby="tambahdata" 
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:action="@{/user/saveuser}" method="POST" id="formsaveuser">
+
+                                        <div class="form-group">
+                                            <label for="nama" 
+                                                   class="col-form-label">Nama:</label>
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="nama-edit"
+                                                   value=""
+                                                   name="nama">
+                                        </div>
+                                        <div class="form-group">
+
+                                            <input type="hidden" 
+                                                   class="form-control" 
+                                                   id="id-edit"
+                                                   value=""
+                                                   name="id">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="no_hp" 
+                                                   class="col-form-label">No Hp: </label>
+
+                                            <input type="text" 
+                                                   oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" 
+                                                   class="form-control" 
+                                                   id="no_hp-edit"
+                                                   name="no_hp"
+                                                   maxlength="14"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password" 
+                                                   class="col-form-label">Password : </label>
+                                            <input type="password" 
+                                                   class="form-control" 
+                                                   id="password-edit"
+                                                   name="password">
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="alamat" class="col-form-label">Alamat : </label>
+                                            <textarea class="form-control" 
+                                                      id="alamat-edit" 
+                                                      name="alamat"></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="role" class="col-form-label">Roles : </label>
+                                            <select class="custom-select" id="role" name="role">
+                                                <option selected>--Role--</option>
+                                                <option value="ROLE_KEPALAGUDANG">Kepala Gudang</option>
+                                                <option value="ROLE_KEUANGAN">Keuangan</option>
+                                                <option value="ROLE_PEMILIK">Pemilik</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" 
+                                            class="btn btn-primary"
+                                            id="submit-form"
+                                            onclick="document.getElementById('formsaveuser').submit()">
+                                        Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <th:block layout:fragment="optional" >
+        <script th:inline="javascript">
+            var htmldata = [[${success}]];
+            console.log(htmldata)
+            if (htmldata) {
+                Swal.fire(
+                        'Good job!',
+                        'Data Berhasil Di tambahkan!',
+                        'success'
+                        )
+               
+            }
+            $(document).ready(function () {
+
+                $('.edit-form').on("click", function (event) {
+                    let id = $(this).attr('data-id');
+                    $.get("/user/" + id, function (data) {
+                        let id = document.getElementById('id-edit');
+                        console.log(data);
+                        $('#id-edit').val(data.id);
+                        $('#nama-edit').val(data.nama);
+                        $('#no_hp-edit').val(data.noHp);
+//                        $('#password-edit').val(data.password);
+                        $('#alamat-edit').val(data.alamat);
+                    });
+                });
+
+                $(".tambah-data-user").on("click", function (e) {
+                    $.post("")
+                })
+            });
+        </script>
+    </th:block>
+</body>
+</html>

@@ -41,11 +41,11 @@ and open the template in the editor.
                                                th:attr="data-nama-produk=${p.nama}"></p>
                                             <p th:text="'Rp.' + ${p.hargaJual}" class="card-text harga-produk" 
                                                th:attr="data-harga-produk=${p.hargaJual}"></p>
-                                                
+
                                             <p th:text="${p.stok}" class="text-left stok-produk" 
                                                th:attr="data-stok-produk=${p.stok}"
                                                style="display: none"></p>
-                                            
+
                                             <p th:text="${p.idProduk}" class="text-left id-produk" 
                                                th:attr="data-id-produk=${p.idProduk}"
                                                style="display: none"></p>
@@ -71,11 +71,11 @@ and open the template in the editor.
                                     <div class="row">
 
                                     </div>
-                                   
+
                                 </div>
-                                
+
                                 <a class="btn btn-success mt-5" 
-                                       th:href="@{/admin/checkout}">Order</a>
+                                   th:href="@{/admin/checkout}">Order</a>
                             </div>
                         </div>
 
@@ -109,7 +109,7 @@ and open the template in the editor.
                                             <img src="${produk.img}"
                                                  class="img-thumbnail"/>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-8 shopping">
                                             <p>
                                                 ${produk.namaProduk}
                                                 <button type="button" 
@@ -173,7 +173,7 @@ and open the template in the editor.
                         setLsContent(ls);
 
                         displayProduk();
-                        
+
                     }
                 }
 
@@ -208,7 +208,7 @@ and open the template in the editor.
                 });
 
                 document.addEventListener("DOMContentLoaded", function (e) {
-                    
+
                     displayProduk();
 
                 })
@@ -223,23 +223,40 @@ and open the template in the editor.
                         displayProduk();
                     }
                 });
-
-                shoppingCart.addEventListener("change", function (e) {
-                    let qtyProduk = document.querySelector(".qty-produk");
-
-                    let nama = qtyProduk.getAttribute("data-name");
-                    let qty = Number(qtyProduk.value);
-
-                    setQty(nama, qty);
+                $(document).ready(function () {
+                    $('.qty-produk ').on('input', function () {
+                        this.value = Math.abs(this.value)
+                        
+                        let qty = $(this).val();
+                        let nama = $(this).attr("data-name");
+                        
+                        setQty(nama, qty);
+                    });
                 });
+
+
+//                shoppingCart.addEventListener("change", function (e) {
+//                    let qtyProduk = document.querySelectorAll(".qty-produk");
+//                    let shopping = document.querySelectorAll(".shopping .qty-produk");
+//                   
+//                   
+//
+////                    let nama = qtyProduk.getAttribute("data-name");
+////                    let qty = Number(qtyProduk.value);
+////
+////                    console.log(qty);
+////                    setQty(nama, qty);
+//                });
 
                 function setQty(nama, qty) {
                     let ls = getLsContent();
 
                     for (let i in ls) {
                         if (ls[i].namaProduk == nama) {
+                            console.log(ls[i].namaProduk);
                             ls[i].qty = qty;
                             ls[i].total = ls[i].qty * ls[i].hargaJual;
+                            setLsContent(ls);
                             break;
                         }
                     }
