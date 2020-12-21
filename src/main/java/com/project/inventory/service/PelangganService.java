@@ -48,6 +48,10 @@ public class PelangganService {
         return savePelanggan;
 
     }
+
+    public Long getCountOfCustomer() {
+        return customerRepo.count();
+    }
     
     
    

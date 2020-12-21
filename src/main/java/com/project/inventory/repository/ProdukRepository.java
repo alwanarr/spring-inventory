@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ProdukRepository extends CrudRepository<Produk, Integer> {
-    @org.springframework.data.jpa.repository.Query(value = "SELECT * FROM `produk` WHERE status_id = 3", nativeQuery = true)
-    public Iterable<Produk> getProdukByStatusId();
+    @org.springframework.data.jpa.repository.Query(value = "SELECT * FROM `produk` WHERE status_id = :status_id", nativeQuery = true)
+    public Iterable<Produk> getProdukByStatusId(@Param("status_id") Integer status_id);
     
     @org.springframework.data.jpa.repository.Query(value = "SELECT * FROM `produk` WHERE status_id = 2 and stok >= 1", nativeQuery = true)
     public Iterable<Produk> findAllProduk();

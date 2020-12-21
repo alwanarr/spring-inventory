@@ -69,8 +69,7 @@ public class ProdukService {
     public void updateProduk(Integer id, String nama, Integer harga_jual,
             Integer harga_awal, Integer stok, Integer kategori,
             Integer pemasok, MultipartFile gambar_produk) throws IOException {
-        
-        
+
         String fileName = StringUtils.cleanPath(gambar_produk.getOriginalFilename());
         Produk p = this.getOne(id);
         String namaGambar = p.getGambar();
@@ -88,38 +87,51 @@ public class ProdukService {
         String uploadDir = "product/" + produkUpdate.getIdProduk();
         File f = new File(uploadDir + '/' + namaGambar);
         f.delete();
-        
+
         FileUploadUtil.saveFile(uploadDir, fileName, gambar_produk);
     }
-    
-   public Iterable<Produk> getRejectedProduk(){
-       return produkRepo.getProdukByStatusId();
-   }
-   
-   public Iterable<Produk> getStockOfProduk(){
-       return produkRepo.findAllProdukByStok();
-   }
-   
-   @Transactional(propagation = Propagation.MANDATORY)
-   public ResponseEntity<String> reduceStok(Produk id, Integer stok) throws ProdukReduceException{
-       
-       Integer idProduk = id.getIdProduk();
+
+    public Iterable<Produk> getProdukByStatus(Integer status_id) {
+        return produkRepo.getProdukByStatusId(status_id);
+    }
+
+    public Iterable<Produk> getStockOfProduk() {
+        return produkRepo.findAllProdukByStok();
+    }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public ResponseEntity<String> reduceStok(Produk id, Integer stok) throws ProdukReduceException {
+
+        Integer idProduk = id.getIdProduk();
 //       System.out.println("id produk service" + idProduk);
 //       System.out.println("stok service" + stok);
 
-       Produk p = produkRepo.findById(idProduk).get();
-       if(p == null) {
-           throw new ProdukReduceException("Produk tidak ditemukan");
-       }else if(p.getStok() - stok < 0){
-           throw new ProdukReduceException("Stok " + p.getNama() + " tidak Mencukupi, stok produk adalah " + p.getStok());
-       } 
-       p.setStok(p.getStok() - stok);
-       produkRepo.save(p);
-       
-        
+        Produk p = produkRepo.findById(idProduk).get();
+        if (p == null) {
+            throw new ProdukReduceException("Produk tidak ditemukan");
+        } else if (p.getStok() - stok < 0) {
+            throw new ProdukReduceException("Stok " + p.getNama() + " tidak Mencukupi, stok produk adalah " + p.getStok());
+        }
+        p.setStok(p.getStok() - stok);
+        produkRepo.save(p);
+
         return new ResponseEntity<>("transaksi sukses", HttpStatus.OK);
-       
-       
-       
-   }
+
+    }
+
+    public Long getCountOfProduk() {
+        return produkRepo.count();
+    }
+
+    public void acceptProduct(Integer id, String status) {
+        Produk p = produkRepo.findById(id).get();
+        p.setStatusId(new Status(Integer.parseInt(status)));
+        produkRepo.save(p);
+    }
+
+    public void rejectProduct(Integer id, String status) {
+        Produk p = produkRepo.findById(id).get();
+        p.setStatusId(new Status(Integer.parseInt(status)));
+        produkRepo.save(p);
+    }
 }

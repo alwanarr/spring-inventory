@@ -5,7 +5,10 @@
  */
 package com.project.inventory.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -20,6 +23,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,11 +48,14 @@ public class Kategori implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
-//    @NotNull
+    @NotBlank(message = "cant empty")
+    @NotNull
 //    @Size(min = 1, max = 20)
     @Column(name = "nama_kategori", length = 20)
     private String namaKategori;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kategoriId", fetch = FetchType.LAZY)
     private List<Produk> produkList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "kategoriId", fetch = FetchType.LAZY)
@@ -93,7 +100,8 @@ public class Kategori implements Serializable {
     }
 
     @XmlTransient
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     public List<Tipe> getTipeList() {
         return tipeList;
     }

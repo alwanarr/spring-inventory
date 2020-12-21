@@ -57,12 +57,12 @@ public class Transaksi implements Serializable {
     private Date tanggal;
     @Basic(optional = false)
 //    @NotNull
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @Basic(optional = false)
 //    @NotNull
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
     @JoinColumn(name = "produk_id", referencedColumnName = "id_produk")

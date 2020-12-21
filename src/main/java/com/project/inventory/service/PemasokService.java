@@ -53,5 +53,9 @@ public class PemasokService {
       
         return pemasok;
     }
+
+    public Long getCountOfSupplier() {
+        return pemasokRepo.count();
+    }
       
 }

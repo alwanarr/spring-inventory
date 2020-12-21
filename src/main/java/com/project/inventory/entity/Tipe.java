@@ -6,7 +6,9 @@
 package com.project.inventory.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author i am me
  */
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="id")
 @Entity
 @Table(name = "tipe")
 @XmlRootElement
@@ -46,10 +50,12 @@ public class Tipe implements Serializable {
     @Basic(optional = false)
 //    @NotNull
 //    @Size(min = 1, max = 30)
+    @NotBlank(message = "tidak boleh kosong")
+    @Size(min=1)
     @Column(name = "nama", length = 30)
     private String nama;
     @JoinColumn(name = "kategori_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Kategori kategoriId;
 
     public Tipe() {
@@ -79,7 +85,7 @@ public class Tipe implements Serializable {
     public void setNama(String nama) {
         this.nama = nama;
     }
-    @JsonBackReference
+//    @JsonBackReference
     public Kategori getKategoriId() {
         return kategoriId;
     }

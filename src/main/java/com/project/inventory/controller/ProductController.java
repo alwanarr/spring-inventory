@@ -12,6 +12,8 @@ import com.project.inventory.service.KategoriService;
 import com.project.inventory.service.PemasokService;
 import com.project.inventory.service.ProdukService;
 import java.io.IOException;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -46,11 +49,16 @@ public class ProductController {
         Iterable<Produk> produk = produkService.getAllProduk();
         
         
-        Iterable<Produk> rejectedProduk = produkService.getRejectedProduk();
+        Iterable<Produk> rejectedProduk = produkService.getProdukByStatus(3);
         if (rejectedProduk != null) model.addAttribute("rejectedProduk", rejectedProduk);
         
         Iterable<Produk> getStokProduk = produkService.getStockOfProduk();
         if (getStokProduk != null) model.addAttribute("getStokProduk", getStokProduk);
+        
+        Iterable<Produk> accProducts = produkService.getProdukByStatus(1);
+        if (accProducts != null) model.addAttribute("accproducts", accProducts);
+        
+       
         
         model.addAttribute("kategori", k);
         model.addAttribute("pemasok", p);
@@ -77,27 +85,35 @@ public class ProductController {
         Produk p = produkService.getOne(id);
         Iterable<Kategori> k = kategoriService.getAllKategori();
         Iterable<Pemasok> pemasok = pemasokService.getAllPemasok();
-
+        Produk produkForm = new Produk();
+        
+        
         model.addAttribute("produk", p);
         model.addAttribute("kategori", k);
         model.addAttribute("pemasok", pemasok);
+        model.addAttribute("produkForm", produkForm);
         return "product/edit-product";
     }
 
     @PostMapping("/product/saveproduct")
     public String saveProduct(
-            @RequestParam("namaproduk") String nama,
-            @RequestParam("harga_jual") Integer harga_jual,
-            @RequestParam("harga_awal") Integer harga_awal,
-            @RequestParam("stok") Integer stok,
-            @RequestParam("kategori") Integer kategori,
-            @RequestParam("pemasok") Integer pemasok,
-            @RequestParam("gambar_produk") MultipartFile multipartFile
+            
+            @RequestParam("namaproduk") @NotBlank String nama,
+            @RequestParam("harga_jual") @Min(1) Integer harga_jual,
+            @RequestParam("harga_awal") @Min(1) Integer harga_awal,
+            @RequestParam("stok") @Min(1) Integer stok,
+            @RequestParam("kategori")  Integer kategori,
+            @RequestParam("pemasok")  Integer pemasok,
+            @RequestParam("gambar_produk") MultipartFile multipartFile,
+             RedirectAttributes atts
     ) throws IOException {
         produkService.saveProduk(nama, harga_jual, harga_awal,
                 stok, kategori, pemasok, multipartFile);
+        atts.addFlashAttribute("success", "Berhasil menyimpan data produk");
         return "redirect:/products";
     }
+    
+    
 
     @GetMapping("/product/getOneProduct/{id}")
     @ResponseBody

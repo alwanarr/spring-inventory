@@ -37,7 +37,7 @@ and open the template in the editor.
                                role="tab" 
                                aria-controls="tipe_category" 
                                aria-selected="false">Tipe Kategori</a>
-                          
+
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -70,7 +70,7 @@ and open the template in the editor.
                                                 <i class="fa fa-pencil text-light" ></i>
                                             </button>
                                             &nbsp;&nbsp;&nbsp;
-                                            <a class="btn btn-danger delete-confirm"
+                                            <a class="btn btn-danger delete-confirm-kategori"
                                                th:data-id ="${k.id}"
                                                >
                                                 <i class="fa fa-trash text-light" ></i>
@@ -98,7 +98,8 @@ and open the template in the editor.
                                                                     <input type="text" 
                                                                            class="form-control kategori-nama" 
                                                                            id="nama kategori-nama"
-                                                                           name="nama">
+                                                                           name="nama"
+                                                                           required="">
                                                                 </div>
 
 
@@ -107,29 +108,29 @@ and open the template in the editor.
                                                                        id="nama kategori-id"
                                                                        name="id">
 
+                                                                <div class="float-right">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" 
+                                                                            class="btn btn-primary"
+                                                                            id="submit-form"
+                                                                            >
+                                                                        Simpan</button>
+                                                                </div>
 
                                                             </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="submit" 
-                                                                    class="btn btn-primary"
-                                                                    id="submit-form"
-                                                                    onclick="document.getElementById('editkategori').submit()">
-                                                                Simpan</button>
+
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane fade" id="tipe_category" role="tabpanel" aria-labelledby="tipe_category-tab">
-                              <th:block th:replace="category/tipekategori::tipe_kategori"></th:block>
+                            <th:block th:replace="category/tipekategori::tipe_kategori"></th:block>
                         </div>
-                        
+
                     </div>
 
 
@@ -156,23 +157,25 @@ and open the template in the editor.
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form th:action="@{/admin/savecategory}" method="POST" id="addkategori">
+                            <form th:action="@{/admin/savecategory}" th:object="${kategoriForm}"   method="POST" id="addkategori">
 
                                 <div class="form-group">
                                     <label for="namaKategori" 
                                            class="col-form-label">Nama : </label>
-                                    <input type="text" class="form-control" id="namaKategori" name="namaKategori"/>
+                                    <input th:field="*{namaKategori}"  class="form-control" required=""/>
+                                    <h1 th:text="${#fields.hasErrors('namaKategori')}"></h1>
+                                    <h2 th:errors="*{namaKategori}"></h2>
                                 </div>
+                                <div class="float-right">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" 
+                                            class="btn btn-primary"
+                                            id="submit-form">Simpan</button>
+                                </div>
+
                             </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" 
-                                    class="btn btn-primary"
-                                    id="submit-form"
-                                    onclick="document.getElementById('addkategori').submit()">
-                                Simpan</button>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -183,7 +186,7 @@ and open the template in the editor.
 <th:block layout:fragment="optional" >
     <script th:inline="javascript">
         var htmldata = [[${success}]];
-       
+//       console.log(htmldata);
         if (htmldata) {
             Swal.fire(
                     'Good job!',
@@ -200,34 +203,34 @@ and open the template in the editor.
         }
 
         $('.edit-form').on("click", function () {
-            console.log("data");
+//            console.log("data");
             let id = $(this).attr('data-id');
-            console.log(id)
-            
+//            console.log(id)
+
             $.get('/admin/category/' + id, function (data) {
                 $('.kategori-nama').val(data.namaKategori);
-                $('.kategori-id').val(data.id);  
-                
+                $('.kategori-id').val(data.id);
+
             })
         });
-        
-       
-        
-         $('.edit-form-tipe').on("click", function () {
-                            
+
+
+
+        $('.edit-form-tipe').on("click", function () {
+
 
             let id = $(this).attr('data-id');
             $.get('/admin/getOneTipe/' + id, function (data) {
-               $('.nama-tipe').val(data.nama);
-               $('#category-id').val(data.kategoriId.id);
-               $('.kategori-tipe-id').val(data.id);
-               console.log(data);
+                $('.nama-tipe').val(data.nama);
+                $('#category-id').val(data.kategoriId.id);
+                $('.kategori-tipe-id').val(data.id);
+                console.log(data);
             })
         });
-        
-        
-        $(".delete-confirm").on("click", function (e) {
-           
+
+
+        $(".delete-confirm-kategori").on("click", function (e) {
+
             e.preventDefault();
             let url = $(this).attr('href');
             let id = $(this).attr('data-id');
@@ -247,10 +250,10 @@ and open the template in the editor.
             })
 
         });
-        
-        
+
+
         $(".delete-tipe-confirm").on("click", function (e) {
-           
+
             e.preventDefault();
             let url = $(this).attr('href');
             let id = $(this).attr('data-id');
@@ -270,8 +273,8 @@ and open the template in the editor.
             })
 
         });
-        
-       
+
+
     </script>
 </th:block>
 </body>

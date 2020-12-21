@@ -51,6 +51,9 @@ public class TransactionController {
     @PostMapping("/admin/savetransaction")
     @ResponseBody
     public ResponseEntity<String> saveAllTransaksi(@RequestBody List<Transaksi> transaksiList){
+//        for (Transaksi transaksi : transaksiList) {
+//            System.out.println("transaksi "+transaksi);
+//        }
         try{
             transaksiService.saveAllTransaksi(transaksiList);
         }catch( ProdukReduceException p){

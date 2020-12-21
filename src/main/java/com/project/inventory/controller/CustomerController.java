@@ -52,7 +52,7 @@ public class CustomerController {
             @RequestParam("alamat") String alamat
     ) {
        
-
+        System.out.println("masuk customer create");
         Pelanggan p = pelangganService.saveCustomer(nama, no_hp, alamat, email);
         System.out.println("id "+ p.getIdPelanggan());
         return p.getIdPelanggan();

@@ -5,7 +5,7 @@
             <li th:text="${t.nama}"></li>
             <li th:text="${t.kategoriId.namaKategori}"></li>
         </ul>-->
-    
+    <h1 class="text-center mt-3">Produk Habis</h1>
     <table class="table table-striped mt-5">
         <thead>
             <tr>
@@ -30,7 +30,7 @@
                 <td th:text="${p.pemasokId.nama}"></td>
                 <td>
                     <a class="btn btn-warning"
-                       th:href="@{/product/edit-product/{id} (id=${p.id})}">
+                       th:href="@{/product/edit-product/{idProduk} (id=${p.idProduk})}">
                          <i class="fa fa-pencil text-light" ></i>
                     </a>
                 </td>

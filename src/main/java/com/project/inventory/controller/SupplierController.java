@@ -66,14 +66,14 @@ public class SupplierController {
     public String updatePemasok(
                                 RedirectAttributes atts,
                                 @RequestParam("nama") String nama,
-                                @RequestParam("id") String id,
+                                @RequestParam("id") Integer id,
                                 @RequestParam("no_hp") String no_hp,
                                 @RequestParam("email") String email,
                                 @RequestParam("alamat") String alamat
+                               
     ){
-        Integer idku = Integer.parseInt(id);
-        pemasokService.updatePemasok(idku, nama, email, no_hp, alamat);  
-        
+        pemasokService.updatePemasok(id, nama, email, no_hp, alamat);  
+        atts.addFlashAttribute("success", "success");
         return "redirect:/admin/supplier";
     }
     

@@ -21,8 +21,9 @@ and open the template in the editor.
             <div class="card ml-3 mt-5 shadow">
                 <div class="card-body">
                     <h1 class="text-center">Edit Produk</h1>
-
-                    <form th:action="@{/product/updateproduct/{id}(id=${produk.id}) }" 
+                    
+                    <form  
+                          th:action="@{/product/updateproduct/{id} (id=${produk.idProduk})}"
                           method="POST"
                           id="addproduk"
                           enctype="multipart/form-data">
@@ -76,7 +77,6 @@ and open the template in the editor.
                                 <option value="" disabled="" selected="">--Pilih Kategori--</option>
                                 <option th:each="k:${kategori}"
                                         th:value="${k.id}"
-
                                         th:text="${k.namaKategori}"
                                         th:selected="${produk.kategoriId.id}"></option>
                             </select>
@@ -88,16 +88,16 @@ and open the template in the editor.
                             <select class="form-control" name="pemasok"> 
                                 <option value="" disabled="" selected="">--Pilih Pemasok--</option>
                                 <option th:each="p:${pemasok}"
-                                        th:value="${p.id}"
+                                        th:value="${p.idPemasok}"
                                         th:text="${p.nama}"
-                                        th:selected="${produk.pemasokId.id}"></option>
+                                        th:selected="${produk.pemasokId.idPemasok}"></option>
                             </select>
                         </div>
 
                         <img 
                             width="300"
                             height="200"
-                            th:src="@{'/product/' + ${produk.id} + '/' + ${produk.gambar} }"/>
+                            th:src="@{'/product/' + ${produk.idProduk} + '/' + ${produk.gambar} }"/>
 
                         <div class="form-group">
                             <label for="gambar_produk" 

@@ -26,13 +26,13 @@ and open the template in the editor.
 
                                 <div class="form-group no_hp_parent">
                                     <label for="no_hp">No HP :</label>
-                                    <input type="text" 
+                                    <input type="number" 
                                            class="form-control" 
                                            name="no_hp" 
                                            id="no_hp"
                                            required=""
                                            />        
-                                    <div id="suggesstion-box"></div>
+                                    
                                 </div>
 
                                 <div class="form-group">
@@ -58,7 +58,7 @@ and open the template in the editor.
 
                                 <div class="form-group">
                                     <label for="alamat">Alamat :</label>
-                                    <textarea class="form-control" name="alamat"  id="alamat">
+                                    <textarea class="form-control" name="alamat"  id="alamat" required="">
                                         
                                     </textarea>    
                                 </div>
@@ -68,7 +68,8 @@ and open the template in the editor.
                                     <input type="date" 
                                            class="form-control" 
                                            name="tanggal" 
-                                           id="tanggal"/>           
+                                           id="tanggal"
+                                           required=""/>           
                                 </div>
 
                                 <h4>Total : <span class="total">XX.xxxx</span></h4>
@@ -226,15 +227,22 @@ and open the template in the editor.
                     saveCustomer();
                 })
             });
-            
-            
+
+            function getFormattedDate() {
+                var date = new Date();
+                var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+
+                return str;
+            }
+
             //simpan customer dan order produk
             function saveCustomer() {
-                
+
                 let no_hp_form = document.querySelector("#no_hp").value;
                 let email_form = document.querySelector("#email").value;
                 let alamat_form = document.querySelector("#alamat").value;
                 let nama_form = document.querySelector("#nama").value;
+
 
 
                 $.ajax({
@@ -247,37 +255,40 @@ and open the template in the editor.
                         "email": email_form,
                         "alamat": alamat_form
                     },
-
                     error: function (req, status, err) {
-                        console.log(status, err);
+                        console.log("erorr customer")
+                        console.log(status, err, req.responseText);
                     },
                     success: function (res) {
 //                        window.location = "http://localhost:9000/admin/checkout";
-                          //jika transaksi gagal
-                          //maka dapatkan id pelanggan, lalu hapus pelanggan
-                          //menggunakan transaksi
-                          console.log(res);
+                        //jika transaksi gagal
+                        //maka dapatkan id pelanggan, lalu hapus pelanggan
+                        //menggunakan transaksi
+                        console.log(res);
                     }
 
                 }).then(function (data) {
+                    console.log("masuk create transaksi")
                     let tanggal = $("#tanggal").val();
-                   
+
                     let ls = JSON.parse(localStorage.getItem("shoppingCart"));
                     let form = [];
-                    for(let i = 0; i < ls.length; i++){
-                       
+                    for (let i = 0; i < ls.length; i++) {
+
                         form.push({
-                            jumlahOrder : ls[i].qty,
-                            totalHarga : ls[i].total,
-                            produkId : Number(ls[i].id),
-                            tanggal : tanggal,
-                            pelangganId : Number(data)
+                            jumlahOrder: ls[i].qty,
+                            totalHarga: ls[i].total,
+                            produkId: Number(ls[i].id),
+                            tanggal: tanggal,
+                            pelangganId: Number(data),
+                            createdAt: new Date(),
+                            updatedAt: new Date()
                         })
-                     
+
 
                     }
-                   
-//                    console.log(JSON.stringify(form));
+
+                    console.log(JSON.stringify(form));
                     $.ajax({
                         method: "POST",
                         contentType: "application/json",
@@ -285,11 +296,19 @@ and open the template in the editor.
                         dataType: "html",
                         data: JSON.stringify(form),
                         error: function (req, status, err) {
-                            alert(req.responseText);
+//                            alert(req.responseText);
+//                            console.log(req.responseText);
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: req.responseText,
+                            });
                         },
                         success: function (res) {
                             console.log(res);
-//                            localStorage.clear();
+                            localStorage.clear();
+                            window.location.href = "http://localhost:9000/admin/order";
                         },
                     })
                 })
