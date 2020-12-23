@@ -129,8 +129,7 @@ public class ProductController {
             @RequestParam("pemasok") Integer pemasok,
             @RequestParam("gambar_produk") MultipartFile gambar_produk
     ) throws IOException {
-        System.out.println(gambar_produk.isEmpty());
-        System.out.println(gambar_produk);
+        
 
         produkService.updateProduk(id, nama_produk, harga_jual, harga_awal,
                 stok, kategori, pemasok, gambar_produk);
