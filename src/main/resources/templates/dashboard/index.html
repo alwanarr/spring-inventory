@@ -67,7 +67,7 @@ and open the template in the editor.
                 </div>
             </div>
 
-           
+
 
         </div>
     <th:block layout:fragment="optional" >
@@ -80,37 +80,38 @@ and open the template in the editor.
             ]];
             var year = new Date();
             year = year.getFullYear();
-            console.log(year);
+        
 
-
-            document.addEventListener('DOMContentLoaded', function () {
-                const chart = Highcharts.chart('line-cart', {
-                    chart: {
-                        type: 'line'
-                    },
-                    title: {
-                        text: 'Laba tahun ini'
-                    },
-                    xAxis: {
-                        categories: bulan
-                    },
-                    yAxis: {
-                        title: {
-                            text: ''
+            if ($('.line-cart') > 0) {
+                document.addEventListener('DOMContentLoaded', function () {
+                    const chart = Highcharts.chart('line-cart', {
+                        chart: {
+                            type: 'line'
                         },
-                        labels: {
+                        title: {
+                            text: 'Laba tahun ini'
+                        },
+                        xAxis: {
+                            categories: bulan
+                        },
+                        yAxis: {
+                            title: {
+                                text: ''
+                            },
+                            labels: {
 
-                            enabled: false
-                        }
-                    },
-                    series: [
-                        {
-                            name: 'Tahun ' + year,
-                            data: laba
-                        }
-                    ]
+                                enabled: false
+                            }
+                        },
+                        series: [
+                            {
+                                name: 'Tahun ' + year,
+                                data: laba
+                            }
+                        ]
+                    });
                 });
-            });
+            }
         </script>
     </th:block>
 </body>

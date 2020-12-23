@@ -47,19 +47,22 @@ public class ProductController {
         Iterable<Kategori> k = kategoriService.getAllKategori();
         Iterable<Pemasok> p = pemasokService.getAllPemasok();
         Iterable<Produk> produk = produkService.getAllProduk();
-        
-        
+
         Iterable<Produk> rejectedProduk = produkService.getProdukByStatus(3);
-        if (rejectedProduk != null) model.addAttribute("rejectedProduk", rejectedProduk);
-        
+        if (rejectedProduk != null) {
+            model.addAttribute("rejectedProduk", rejectedProduk);
+        }
+
         Iterable<Produk> getStokProduk = produkService.getStockOfProduk();
-        if (getStokProduk != null) model.addAttribute("getStokProduk", getStokProduk);
-        
+        if (getStokProduk != null) {
+            model.addAttribute("getStokProduk", getStokProduk);
+        }
+
         Iterable<Produk> accProducts = produkService.getProdukByStatus(1);
-        if (accProducts != null) model.addAttribute("accproducts", accProducts);
-        
-       
-        
+        if (accProducts != null) {
+            model.addAttribute("accproducts", accProducts);
+        }
+
         model.addAttribute("kategori", k);
         model.addAttribute("pemasok", p);
         model.addAttribute("produk", produk);
@@ -71,10 +74,7 @@ public class ProductController {
     public String showAddProduct(Model model) {
         Iterable<Kategori> k = kategoriService.getAllKategori();
         Iterable<Pemasok> p = pemasokService.getAllPemasok();
-        
-       
 
-        
         model.addAttribute("kategori", k);
         model.addAttribute("pemasok", p);
         return "product/add-product";
@@ -82,12 +82,12 @@ public class ProductController {
 
     @GetMapping("/product/edit-product/{id}")
     public String showEditProduct(@PathVariable("id") Integer id, Model model) {
+
         Produk p = produkService.getOne(id);
         Iterable<Kategori> k = kategoriService.getAllKategori();
         Iterable<Pemasok> pemasok = pemasokService.getAllPemasok();
         Produk produkForm = new Produk();
-        
-        
+
         model.addAttribute("produk", p);
         model.addAttribute("kategori", k);
         model.addAttribute("pemasok", pemasok);
@@ -97,23 +97,20 @@ public class ProductController {
 
     @PostMapping("/product/saveproduct")
     public String saveProduct(
-            
             @RequestParam("namaproduk") @NotBlank String nama,
             @RequestParam("harga_jual") @Min(1) Integer harga_jual,
             @RequestParam("harga_awal") @Min(1) Integer harga_awal,
             @RequestParam("stok") @Min(1) Integer stok,
-            @RequestParam("kategori")  Integer kategori,
-            @RequestParam("pemasok")  Integer pemasok,
+            @RequestParam("kategori") Integer kategori,
+            @RequestParam("pemasok") Integer pemasok,
             @RequestParam("gambar_produk") MultipartFile multipartFile,
-             RedirectAttributes atts
+            RedirectAttributes atts
     ) throws IOException {
         produkService.saveProduk(nama, harga_jual, harga_awal,
                 stok, kategori, pemasok, multipartFile);
         atts.addFlashAttribute("success", "Berhasil menyimpan data produk");
         return "redirect:/products";
     }
-    
-    
 
     @GetMapping("/product/getOneProduct/{id}")
     @ResponseBody
@@ -132,17 +129,16 @@ public class ProductController {
             @RequestParam("pemasok") Integer pemasok,
             @RequestParam("gambar_produk") MultipartFile gambar_produk
     ) throws IOException {
+        
+
         produkService.updateProduk(id, nama_produk, harga_jual, harga_awal,
                 stok, kategori, pemasok, gambar_produk);
         return "redirect:/products";
     }
-    
-    
+
     @GetMapping("product/rejected-product")
-    public String rejectedProduk(Model model){
-    
-        
-       
-         return "product/product";
+    public String rejectedProduk(Model model) {
+
+        return "product/product";
     }
 }

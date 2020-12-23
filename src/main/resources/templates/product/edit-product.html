@@ -21,7 +21,7 @@ and open the template in the editor.
             <div class="card ml-3 mt-5 shadow">
                 <div class="card-body">
                     <h1 class="text-center">Edit Produk</h1>
-                    
+                 
                     <form  
                           th:action="@{/product/updateproduct/{id} (id=${produk.idProduk})}"
                           method="POST"
@@ -35,7 +35,8 @@ and open the template in the editor.
                                    id="nama_produk" 
                                    name="nama_produk"
                                    th:value="${produk.nama}"
-                                   placeholder="Masukan Nama"/>
+                                   placeholder="Masukan Nama"
+                                   required=""/>
                         </div>
 
                         <div class="form-group">
@@ -46,7 +47,8 @@ and open the template in the editor.
                                    id="harga_jual" 
                                    name="harga_jual"
                                    th:value="${produk.hargaJual}"
-                                   placeholder="Masukan Harga Jual"/>
+                                   placeholder="Masukan Harga Jual"
+                                   required=""/>
                         </div>
 
                         <div class="form-group">
@@ -56,7 +58,8 @@ and open the template in the editor.
                                    id="harga_awal" 
                                    name="harga_awal"
                                    th:value="${produk.hargaAwal}"
-                                   placeholder="Masukan Harga Awal"/>
+                                   placeholder="Masukan Harga Awal"
+                                   required=""/>
                         </div>
 
                         <div class="form-group">
@@ -66,31 +69,34 @@ and open the template in the editor.
                                    id="stok" 
                                    name="stok"
                                    th:value="${produk.stok}"
-                                   placeholder="Masukan Stok"/>
+                                   placeholder="Masukan Stok"
+                                   required=""/>
                         </div>
 
 
                         <div class="form-group">
                             <label for="kategori" 
                                    class="col-form-label">Kategori : </label>
-                            <select class="form-control" name="kategori"> 
+                               <select class="form-control" name="kategori" required=""> 
                                 <option value="" disabled="" selected="">--Pilih Kategori--</option>
                                 <option th:each="k:${kategori}"
                                         th:value="${k.id}"
                                         th:text="${k.namaKategori}"
-                                        th:selected="${produk.kategoriId.id}"></option>
+                                        th:selected="${produk.kategoriId.id}"
+                                        ></option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="pemasok" 
                                    class="col-form-label">Pemasok : </label>
-                            <select class="form-control" name="pemasok"> 
+                            <select class="form-control" name="pemasok"  required=""> 
                                 <option value="" disabled="" selected="">--Pilih Pemasok--</option>
                                 <option th:each="p:${pemasok}"
                                         th:value="${p.idPemasok}"
                                         th:text="${p.nama}"
-                                        th:selected="${produk.pemasokId.idPemasok}"></option>
+                                        th:selected="${produk.pemasokId.idPemasok}"
+                                       ></option>
                             </select>
                         </div>
 
@@ -104,7 +110,9 @@ and open the template in the editor.
                                    class="col-form-label">Gambar Produk : </label>
                             <input type="file" 
                                    class="form-control"
-                                   name="gambar_produk" />
+                                   name="gambar_produk" 
+                                   
+                                   />
                         </div>
                         <div class="float-right mt-4">
                             <a
