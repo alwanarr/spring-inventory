@@ -73,17 +73,23 @@ public class ProdukService {
         String fileName = StringUtils.cleanPath(gambar_produk.getOriginalFilename());
         Produk p = this.getOne(id);
         String namaGambar = p.getGambar();
+      
         p.setNama(nama);
         p.setHargaAwal(harga_awal);
         p.setHargaJual(harga_jual);
         p.setStok(stok);
         p.setKategoriId(new Kategori(kategori));
         p.setPemasokId(new Pemasok(pemasok));
-        p.setGambar(fileName);
+          if(gambar_produk.isEmpty()){
+              p.setGambar(namaGambar);
+          }else{
+              p.setGambar(fileName);
+          }
+        
         p.setStatusId(new Status(1));
-
+        
         Produk produkUpdate = produkRepo.save(p);
-
+          
         String uploadDir = "product/" + produkUpdate.getIdProduk();
         File f = new File(uploadDir + '/' + namaGambar);
         f.delete();
