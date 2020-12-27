@@ -15,6 +15,7 @@ import com.project.inventory.repository.ProdukRepository;
 import java.io.File;
 import org.springframework.util.StringUtils;
 import java.io.IOException;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -141,7 +142,11 @@ public class ProdukService {
         produkRepo.save(p);
     }
 
-    public void deleteById(Integer id) {
+    public void deleteById(Integer id) throws IOException {
+        String uploadDir = "product/" + id;
+//        File f = new File(uploadDir);
+//        f.delete();
+        FileUtils.deleteDirectory(new File(uploadDir));
         produkRepo.deleteById(id);
     }
 }

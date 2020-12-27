@@ -12,6 +12,8 @@ import com.project.inventory.service.KategoriService;
 import com.project.inventory.service.PemasokService;
 import com.project.inventory.service.ProdukService;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import sun.net.www.content.image.png;
 
 /**
  *
@@ -41,6 +44,8 @@ public class ProductController {
 
     @Autowired
     ProdukService produkService;
+
+    private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
 
     @GetMapping("/products")
     public String showProducts(Model model) {
@@ -107,14 +112,14 @@ public class ProductController {
             RedirectAttributes atts
     ) throws IOException, Exception {
         
-        if(multipartFile.getContentType() != "image/jpeg" && 
-                multipartFile.getContentType() != "image/jpeg"){
+        String fileContentType = multipartFile.getContentType();
+        if (!contentTypes.contains(fileContentType)) {
             throw new Exception("formulir yang anda kirim bukan berupa gambar");
         }
-        
+
+
         produkService.saveProduk(nama, harga_jual, harga_awal,
                 stok, kategori, pemasok, multipartFile);
-       
         atts.addFlashAttribute("success", "Berhasil menyimpan data produk");
         return "redirect:/products";
     }
@@ -136,7 +141,6 @@ public class ProductController {
             @RequestParam("pemasok") Integer pemasok,
             @RequestParam("gambar_produk") MultipartFile gambar_produk
     ) throws IOException {
-        
 
         produkService.updateProduk(id, nama_produk, harga_jual, harga_awal,
                 stok, kategori, pemasok, gambar_produk);
@@ -148,9 +152,9 @@ public class ProductController {
 
         return "product/product";
     }
-    
+
     @GetMapping("/produk/delete/{id}")
-    public String deleteProduk(@PathVariable("id") Integer id){
+    public String deleteProduk(@PathVariable("id") Integer id) {
         produkService.deleteById(id);
         return "redirect:/products";
     }
