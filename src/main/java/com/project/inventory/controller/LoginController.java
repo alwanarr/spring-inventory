@@ -18,13 +18,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
     
     
-    @GetMapping("/login")
+    @GetMapping("/")
     public String getFormLogin(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder
+                                    .getContext()
+                                    .getAuthentication();
         String login = auth.getName();
-        
+ 
         if(login != "anonymousUser"){
-            return "redirect:/logout";
+           
+            return "redirect:/dashboard";
         }
    
         return "login/login";

@@ -105,10 +105,10 @@ and open the template in the editor.
                             <h1 class="text-center mt-3">Daftar Produk</h1>
                             <a  th:href="@{/product/add-product}"  class="btn btn-primary ml-4"
                                 >
-                                
+
                                 Tambah Produk
                             </a>
-                            
+
                             <table class="table table-striped mt-4">
                                 <thead>
                                     <tr>
@@ -189,7 +189,23 @@ and open the template in the editor.
                         $('#kategori').val(data.kategoriId.id);
 
                     })
-                })
+                });
+                $('.delete-confirm').on("click", function () {
+                    let id = $(this).attr('data-id');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Are you Sure!',
+                        text: 'Do you want delete this Supplier?',
+                        showCancelButton: true,
+                        showCloseButton: true,
+                        confirmButtonText: 'Ok',
+                        cancelButtonText: 'Cancel'
+                    }).then((confirm) => {
+                       if(confirm.value){
+                         window.location = `/produk/delete/${id}`;
+                       }
+                    });
+                });
             });
         </script>
     </th:block>
