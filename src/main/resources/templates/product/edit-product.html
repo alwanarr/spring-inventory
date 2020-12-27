@@ -70,7 +70,9 @@ and open the template in the editor.
                                    name="stok"
                                    th:value="${produk.stok}"
                                    placeholder="Masukan Stok"
-                                   required=""/>
+                                   min="0"
+                                   required=""
+                                   oninput="this.value = Math.abs(this.value)"/>
                         </div>
 
 
@@ -111,7 +113,8 @@ and open the template in the editor.
                             <input type="file" 
                                    class="form-control"
                                    name="gambar_produk" 
-                                   
+                                   required=""
+                                   accept="image/png, image/jpeg"
                                    />
                         </div>
                         <div class="float-right mt-4">

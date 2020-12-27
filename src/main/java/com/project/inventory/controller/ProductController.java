@@ -105,9 +105,16 @@ public class ProductController {
             @RequestParam("pemasok") Integer pemasok,
             @RequestParam("gambar_produk") MultipartFile multipartFile,
             RedirectAttributes atts
-    ) throws IOException {
+    ) throws IOException, Exception {
+        
+        if(multipartFile.getContentType() != "image/jpeg" && 
+                multipartFile.getContentType() != "image/jpeg"){
+            throw new Exception("formulir yang anda kirim bukan berupa gambar");
+        }
+        
         produkService.saveProduk(nama, harga_jual, harga_awal,
                 stok, kategori, pemasok, multipartFile);
+       
         atts.addFlashAttribute("success", "Berhasil menyimpan data produk");
         return "redirect:/products";
     }
@@ -140,5 +147,11 @@ public class ProductController {
     public String rejectedProduk(Model model) {
 
         return "product/product";
+    }
+    
+    @GetMapping("/produk/delete/{id}")
+    public String deleteProduk(@PathVariable("id") Integer id){
+        produkService.deleteById(id);
+        return "redirect:/products";
     }
 }

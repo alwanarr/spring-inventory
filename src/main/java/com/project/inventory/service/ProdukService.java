@@ -140,4 +140,8 @@ public class ProdukService {
         p.setStatusId(new Status(Integer.parseInt(status)));
         produkRepo.save(p);
     }
+
+    public void deleteById(Integer id) {
+        produkRepo.deleteById(id);
+    }
 }
