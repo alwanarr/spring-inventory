@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <span th:fragment="navbar-admin">
     <a href="/dashboard" 
-       sec:authorize="hasAnyRole('ADMIN', 'KEPALAGUDANG', 'PEMILIK')"
+       sec:authorize="hasAnyRole('ADMIN', 'KEPALAGUDANG', 'PEMILIK', 'KEUANGAN')"
        th:classappend="${#request.getRequestURI() == '/dashboard' ? 'active-menu' : ''}"
        class="list-group-item list-group-item-action bg-light">Dashboard</a>
     <a href="/admin/order" 

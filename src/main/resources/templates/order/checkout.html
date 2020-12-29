@@ -32,7 +32,7 @@ and open the template in the editor.
                                            id="no_hp"
                                            required=""
                                            />        
-                                    
+
                                 </div>
 
                                 <div class="form-group">
@@ -308,7 +308,17 @@ and open the template in the editor.
                         success: function (res) {
                             console.log(res);
                             localStorage.clear();
-                            window.location.href = "http://localhost:9000/admin/order";
+                            
+                            Swal.fire(
+                                    'Good job!',
+                                    'Order berhasil di proses!',
+                                    'success'
+                                    ).then(function (confirm) {
+
+                                if (confirm.value) {
+                                   window.location.href = "http://localhost:9000/admin/order";
+                                }
+                            })
                         },
                     })
                 })

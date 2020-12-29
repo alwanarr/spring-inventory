@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/fragment}">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div layout:fragment="sidebar">
+            <th:block th:replace="fragments/navbar::navbar-admin"></th:block>
+        </div>
+        <div layout:fragment="content">
+            <div class="card ml-3 mt-5 shadow">
+                <div class="card-body">
+                    <!--                    <h1 th:text="${nyoba}"></h1>
+                                        <ul th:each="e : ${datas}">
+                                            <li th:text="${e}"></li>
+                                        </ul>
+                                        <br>-->
+
+                    <!--                    <p class="text-center" th:text="'Nama : ' +${employees[13]}"></p>
+                                        <p class="text-center" th:text="'Email : ' +${employees[1]}"></p>
+                                        <p class="text-center" th:text="'Jabatan : ' +${employees[4]}"></p>
+                                        <p class="text-center" th:text="'Alamat : ' +${employees[18]}"></p>-->
+
+                    <h1 class="nama text-center"></h1>
+                    <h1 class="email text-center"></h1>
+                    <h1 class="jabatan text-center"></h1>
+                    <h1 class="alamat text-center"></h1>
+                    <h1 class="tanggal_lahir text-center"></h1>
+                    <h1 class="jenkel text-center"></h1>
+                </div>
+            </div>
+        </div>
+
+    <th:block layout:fragment="optional" >
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+
+//            var data = /*[[${datas}]]*/;
+//            var message = /*[[${employees}]]*/;
+            var employees = /*[[${employees}]]*/;
+            employees = JSON.parse(employees);
+            let tanggal_lahir = employees["Date of Birth"].substring(0, 10).split("-");
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            
+            
+            let dateOfBirth = new Date(tanggal_lahir[0], tanggal_lahir[1], tanggal_lahir[2]);
+            let month = monthNames[dateOfBirth.getMonth()];
+            dateOfBirth = `${tanggal_lahir[2]} ${month}, ${tanggal_lahir[0]}`;
+            
+            
+            document.querySelector(".nama").textContent = `Nama : ${employees.Name}`;
+            document.querySelector(".email").textContent = `Email : ${employees.Email}`;
+            document.querySelector(".jabatan").textContent = `Jabatan : ${employees.Position}`;
+            document.querySelector(".alamat").textContent = `Alamat : ${employees["Address Street"]}, Kota ${employees["Address City"]}`;
+            document.querySelector(".tanggal_lahir").textContent = `Tanggal Lahir : ${dateOfBirth}`;
+            document.querySelector(".jenkel").textContent = `Jenis Kelamin : ${employees["Gender"] == 1 ? "Laki-laki" : ""}`;
+            
+
+
+
+            /*]]>*/
+        </script>
+    </th:block>
+
+</body>
+</html>

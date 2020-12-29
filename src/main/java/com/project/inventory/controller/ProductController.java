@@ -139,11 +139,13 @@ public class ProductController {
             @RequestParam("stok") Integer stok,
             @RequestParam("kategori") Integer kategori,
             @RequestParam("pemasok") Integer pemasok,
-            @RequestParam("gambar_produk") MultipartFile gambar_produk
+            @RequestParam("gambar_produk") MultipartFile gambar_produk,
+            RedirectAttributes atts
     ) throws IOException {
 
         produkService.updateProduk(id, nama_produk, harga_jual, harga_awal,
                 stok, kategori, pemasok, gambar_produk);
+         atts.addFlashAttribute("success", "Berhasil mengubah data produk");
         return "redirect:/products";
     }
 
@@ -154,7 +156,7 @@ public class ProductController {
     }
 
     @GetMapping("/produk/delete/{id}")
-    public String deleteProduk(@PathVariable("id") Integer id) {
+    public String deleteProduk(@PathVariable("id") Integer id) throws IOException {
         produkService.deleteById(id);
         return "redirect:/products";
     }

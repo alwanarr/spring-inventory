@@ -93,9 +93,11 @@ public class CategoryController {
 
     @PostMapping("/admin/updatecategory")
     public String updateCategory(@RequestParam("nama") String nama,
-            @RequestParam("id") Integer id) {
+            @RequestParam("id") Integer id,
+            RedirectAttributes atts) {
 
         kategoriService.updateCategory(id, nama);
+        atts.addFlashAttribute("success", "success");
         return "redirect:/admin/categories";
     }
 

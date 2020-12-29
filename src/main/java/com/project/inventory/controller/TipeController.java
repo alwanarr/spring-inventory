@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -22,38 +23,43 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class TipeController {
+
     @Autowired
     TipeService tipeService;
-    
+
     @PostMapping("/admin/savetipekategori")
-    public String saveTypeCategory(@RequestParam("namaKategori") String nama, 
-                                    @RequestParam("category") Integer kategori
-            ){
+    public String saveTypeCategory(@RequestParam("namaKategori") String nama,
+            @RequestParam("category") Integer kategori,
+            RedirectAttributes atts
+    ) {
         tipeService.saveTipe(nama, kategori);
+        atts.addFlashAttribute("success", "success");
         return "redirect:/admin/categories";
     }
-    
+
     @GetMapping("/admin/getOneTipe/{id}")
     @ResponseBody
-    public Tipe getOneTipe(@PathVariable(value = "id") Integer id){
+    public Tipe getOneTipe(@PathVariable(value = "id") Integer id) {
         Tipe tipe = tipeService.getOneTipe(id);
         return tipe;
     }
-    
+
     @GetMapping("/admin/tipecategory/delete/{id}")
-    public String deleteTipeCategory(@PathVariable(value="id") Integer id){
+    public String deleteTipeCategory(@PathVariable(value = "id") Integer id) {
         tipeService.deleteTipeCategory(id);
         return "redirect:/admin/categories";
     }
-    
-   
+
     @PostMapping("/admin/updatetipecategory")
     public String updateCategory(@RequestParam("nama") String nama,
             @RequestParam("id") Integer id,
-            @RequestParam("category") Integer category
-            ) {
-       
+            @RequestParam("category") Integer category,
+            RedirectAttributes atts
+    ) {
+
         tipeService.updateTipeCategory(id, nama, category);
+        atts.addFlashAttribute("success", "success");
+
         return "redirect:/admin/categories";
     }
 }
